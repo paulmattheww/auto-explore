@@ -1,6 +1,8 @@
 # Auto Explore
 
-The proposed Python library will be a first pass at creating a reliable tool that performs a quality first-pass data analysis for machine learning practitioners.  The earliest stages of a machine learning project require exploratory analysis to uncover raw features and insights that can be exploited in the modeling process.  Exploratory analysis typically follows a somewhat tree-like (and at times recursive) process where task-patterns emerge across projects.  By specifying certain parameters *a priori* about the data in question, a process that adheres to these task-patterns can be designed using open source tools to automate the majority of the "first pass" data analysis work -- freeing up time for deep-dive analyses, modeling, and deployment.
+The goal of this Python library is to create a reliable tool for performing a first-pass exploratory data analysis.  Machine learning developers will hopefully benefit from a shortening iteration time for model production.  
+
+The earliest stages of a machine learning project require exploratory analysis to uncover raw features and insights that can be exploited in the modeling process.  Exploratory analysis typically follows a somewhat tree-like (and at times recursive) process where task-patterns emerge across projects.  By specifying certain parameters *a priori* about the data in question, a process that adheres to these task-patterns can be designed using open source tools to automate the majority of the "first pass" data analysis work -- freeing up time for deep-dive analyses, modeling, and deployment.
 
 The open source projects that will be relied upon most for this project include:
     - [pandas-profiling](https://github.com/pandas-profiling/pandas-profiling)
@@ -9,16 +11,7 @@ The open source projects that will be relied upon most for this project include:
     - [pandas](https://pandas.pydata.org/)
     - [dask](https://github.com/dask/dask)
 
-The delivery mechanism will be two-fold: a command line interface and a Python package usable in an interactive runtime environment.  Functionality will range from the bare minimum of feature identification to a more detailed reporting on the data.  A full suite will be available for patient users.  An attempt will be made to create a document that is editable, though this may be difficult.  
-
-To ensure this is relevant, the topics addressed for the class are:
-    - Dask computing
-    - Vectorization & efficient, functional programming
-    - Library development
-    - Utilization of Cookie Cutter template
-    - High-level design patterns, such as decorators and context managers
-    - Atomic handling of files
-    - More?  
+The delivery mechanism will be two-fold: a command line interface and a Python package usable in an interactive runtime environment.  Functionality will range from the bare minimum of feature identification to a more detailed reporting on the data.  A full suite will be available for patient users.  
 
 While the term "automated" data analysis sounds difficult, the heavy lifting has been done by these library authors.  This project will simply be extending good work that already exists, meaning I will not need to spend considerable time re-inventing the wheel on already established techniques.  
 
