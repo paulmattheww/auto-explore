@@ -9,7 +9,13 @@ pytest-cov = "*"
 
 [packages]
 # auto_explore = {editable = true,path = "."}
-pset-utils = {editable = true,git = "https://github.com/csci-e-29/2019sp-pset-utils-paulmattheww.git@4dc026ea2b8301696f85553f63ad08931931f29e"}
+sklearn = "*"
+pandas-profiling = "*"
+featexp = "*"
+speedml = "*"
+pandas = "*"
+dask = "*"
+
 
 [requires]
 python_version = "3.7"
