@@ -2,7 +2,7 @@
 Class definitions for automated EDA.
 '''
 import pandas as pd
-from sklearn.datasets import load_wine
+from sklearn.model_selection import train_test_split
 
 class AutopilotExploratoryAnalysis:
     '''
@@ -10,11 +10,16 @@ class AutopilotExploratoryAnalysis:
         - How the data should exist when feeding it in
         - Output to console or notebook vs. HTML
     '''
-    def __init__(self, df, drop_cols, bin_cols, cat_cols, num_cols, text_cols,
-                target_col=None, hue=None, na_tolerance=.10, time_dim=None, dask=True):
+    def __init__(self, df, bin_cols, cat_cols, num_cols, text_cols,
+                target_col=None, hue=None, na_tolerance=.10, time_dim=None,
+                dask=True):
         '''
         ARGS:
-            drop_cols, bin_cols, cat_cols, num_cols, text_cols
+            bin_cols: <list> Binary columns.  Vectors must adhere to
+                arrays of int, float or bool.  Transformed to int.
+            cat_cols: <list>
+            num_cols: <list>
+            text_cols: <list>
         KWARGS:
             target_col=None, hue=None, na_tolerance=.10, time_dim=None, dask=True
         '''
@@ -31,7 +36,10 @@ class AutopilotExploratoryAnalysis:
         pass
 
     def fill_missing_values(self, groupby_cols=None):
-        '''Several methods to impute missing data'''
+        '''Several methods to impute missing data
+
+        Depends on characterization of nulls.
+        '''
         pass
 
     def high_level_profile(self):
