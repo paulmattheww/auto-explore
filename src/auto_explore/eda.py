@@ -1,8 +1,8 @@
 '''
 Class definitions for automated EDA.
 '''
-
-
+import pandas as pd
+from sklearn.datasets import load_wine
 
 class AutopilotExploratoryAnalysis:
     '''
