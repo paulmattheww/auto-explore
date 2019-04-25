@@ -1,11 +1,13 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 from numba import double
-from numba.decorators import jit, autojit
+from numba.decorators import jit
 
-@autojit
+@jit
 def correlation_heatmap(df, cutoff=None, title='', outpath=None, type='pearson'):
-    '''Performs a correlation heatmap on a pd.DataFrame object.
+    '''Performs a correlation heatmap on a pd.DataFrame object.  Uses numba's
+    `jit` decorator to eliminate memory expansion (in this instance at the cost
+    of ~5% speed).  
 
     ARGS:
 
