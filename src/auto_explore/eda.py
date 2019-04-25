@@ -12,16 +12,19 @@ class AutopilotExploratoryAnalysis:
     '''
     def __init__(self, df, bin_cols, cat_cols, num_cols, text_cols,
                 target_col=None, hue=None, na_tolerance=.10, time_dim=None,
-                dask=True):
+                dask=True, dask_kwargs=None):
         '''
         ARGS:
-            bin_cols: <list> Binary columns.  Vectors must adhere to
+            bin_cols <list>: Binary columns.  Vectors must adhere to
                 arrays of int, float or bool.  Transformed to int.
-            cat_cols: <list>
-            num_cols: <list>
-            text_cols: <list>
+            cat_cols <list>:
+            num_cols <list>:
+            text_cols <list>:
         KWARGS:
-            target_col=None, hue=None, na_tolerance=.10, time_dim=None, dask=True
+            target_col <str>:
+            hue <str>:
+            na_tolerance <float>:
+            dask <bool>: Whether to use Dask or not (use with larget datasets)
         '''
         pass
 

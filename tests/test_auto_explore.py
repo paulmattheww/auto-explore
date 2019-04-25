@@ -1,6 +1,7 @@
 
 from unittest import TestCase
 
+import pandas as pd
 from sklearn.datasets import load_wine
 
 from auto_explore.eda import AutopilotExploratoryAnalysis
