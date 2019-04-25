@@ -37,3 +37,18 @@ class TestAutopilotEDA(TestCase):
 
     def test_scale_numeric_columns(self):
         pass
+
+    def test_convert_categoricals(self):
+        pass
+
+    def test_derive_top_text_features(self):
+        pass
+
+    def test_cluster_and_plot(self):
+        pass
+
+    def test_rf_feature_importance(self):
+        pass
+
+    def test_derive_optimal_clusters(self):
+        pass

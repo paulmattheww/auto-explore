@@ -2,10 +2,17 @@
 Extends work from:
  - https://github.com/pandas-profiling/pandas-profiling
  - https://github.com/abhayspawar/featexp
+
+ Use caching.  Use Dask.
 '''
+from functools import wraps
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from pandas_profiling import ProfileReport
+
+from .viz import correlation_heatmap
+from .featexp import *
 
 class AutopilotExploratoryAnalysis:
     '''
