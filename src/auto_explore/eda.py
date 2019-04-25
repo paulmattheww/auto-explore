@@ -1,5 +1,7 @@
 '''
-Class definitions for automated EDA.
+Extends work from:
+ - https://github.com/pandas-profiling/pandas-profiling
+ - https://github.com/abhayspawar/featexp
 '''
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -12,7 +14,7 @@ class AutopilotExploratoryAnalysis:
         - Output to console or notebook vs. HTML
     '''
     def __init__(self, df, bin_cols, cat_cols, num_cols, text_cols,
-                target_col=None, hue=None, na_tolerance=.10, time_dim=None,
+                target_col=None, hue=None, time_dim=None,
                 dask=True, dask_kwargs=None):
         '''
         ARGS:
@@ -22,12 +24,17 @@ class AutopilotExploratoryAnalysis:
             num_cols <list>: Numerical (float or int) columns.
             text_cols <list>: String columns of free text.
         KWARGS:
-            target_col <str>:
-            hue <str>:
-            na_tolerance <float>:
+            target_col <str>: Target column that will be modeled.
+            hue <str>: Optional -- for visualization.  Group to viz over.
             dask <bool>: Whether to use Dask or not (use with larget datasets)
         '''
-        pass
+        self.df = df
+        self.bin_cols = bin_cols
+        self.cat_cols = cat_cols
+        self.num_cols = num_cols
+        self.text_cols = text_cols
+        for kwarg, value in kwargs.items():
+            setattr(self, f'{kwarg}', value)
 
     @property
     def split_data(self):
@@ -53,6 +60,7 @@ class AutopilotExploratoryAnalysis:
         pass
 
     def identify_reject_columns(self):
+        '''Relies on self.high_level_profile method'''
         pass
 
     def characterize_distributions(self):
