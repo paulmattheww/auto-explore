@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
+from numba import double
+from numba.decorators import jit, autojit
 
+@autojit
 def correlation_heatmap(df, cutoff=None, title='', outpath=None, type='pearson'):
     '''Performs a correlation heatmap on a pd.DataFrame object.
 

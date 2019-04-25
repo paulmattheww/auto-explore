@@ -15,6 +15,7 @@ featexp = "*"
 speedml = "*"
 pandas = "*"
 dask = "*"
+numba = "*"
 
 
 [requires]
