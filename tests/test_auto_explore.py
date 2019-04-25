@@ -14,4 +14,4 @@ def get_wine_data():
 
 class TestAutopilotEDA(TestCase):
     def __init__(self):
-        ax = AutopilotExploratoryAnalysis()
+        self.ax = AutopilotExploratoryAnalysis()

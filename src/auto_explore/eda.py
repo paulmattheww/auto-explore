@@ -3,6 +3,7 @@ Class definitions for automated EDA.
 '''
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from pandas_profiling import ProfileReport
 
 class AutopilotExploratoryAnalysis:
     '''
@@ -17,9 +18,9 @@ class AutopilotExploratoryAnalysis:
         ARGS:
             bin_cols <list>: Binary columns.  Vectors must adhere to
                 arrays of int, float or bool.  Transformed to int.
-            cat_cols <list>:
-            num_cols <list>:
-            text_cols <list>:
+            cat_cols <list>: Categorical columns.
+            num_cols <list>: Numerical (float or int) columns.
+            text_cols <list>: String columns of free text.
         KWARGS:
             target_col <str>:
             hue <str>:
@@ -32,9 +33,11 @@ class AutopilotExploratoryAnalysis:
     def split_data(self):
         pass
 
+    @staticmethod
     def modify_notebook_configuration(self):
         pass
 
+    @staticmethod
     def characterize_missing_values(self):
         pass
 
