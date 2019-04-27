@@ -22,8 +22,8 @@ def text_cluster_tsne(text_vector,
                       labels=None):
     '''
     '''
-    tfidf = TextVectorizer(text_kwargs)
-    docs = tfidf.fit_transform(text_vector)
+    txt_vctzr = TextVectorizer(**text_kwargs)
+    docs = txt_vctzr.fit_transform(text_vector)
     tsne = TSNEVisualizer()
 
     if labels is None:
