@@ -23,13 +23,24 @@ def cluster_and_plot_pca(df,
     been transformed into numeric datatypes (i.e. converting categorical
     features into one-hot encoded vectors).
 
-    Example:
-        from sklearn.cluster import MiniBatchKMeans
+        Example:
+            from sklearn.cluster import MiniBatchKMeans
 
-        clust_kwargs = dict(random_state=77)
-        cluster_and_plot_pca(wine_df,
-                            ClusterAlgorithm=MiniBatchKMeans,
-                            cluster_kwargs=clust_kwargs)
+            clust_kwargs = dict(random_state=77)
+            cluster_and_plot_pca(wine_df,
+                                ClusterAlgorithm=MiniBatchKMeans,
+                                cluster_kwargs=clust_kwargs)
+
+    ARGS:
+        df <pd.DataFrame>: DataFrame with all numeric data types and no
+            missing values.
+    KWARGS:
+        cluster_range <list> or <array>: List of integers signifying the number
+            of clusters to test in sequence.
+        ClusterAlgorithm <sklearn.cluster>: Currently supports KMeans
+            and MiniBatchKMeans.
+        cluster_kwargs <dict>: kwargs for ClusterAlgorithm, not including
+            num_clusters.
     '''
     pca = PCA(n_components=2, random_state=777)
     X_pca = pd.DataFrame(pca.fit(df).transform(df))
@@ -37,7 +48,7 @@ def cluster_and_plot_pca(df,
     for n_clusters in cluster_range:
         clust_col = "clusters_"+str(n_clusters)
 
-        # perform kmeans
+        # perform kmeans or some other clustering algorithm
         clust = ClusterAlgorithm(n_clusters=n_clusters, **cluster_kwargs)
         clust.fit(df)
         X_pca[clust_col] = clust.labels_
