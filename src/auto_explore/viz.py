@@ -9,25 +9,38 @@ from sklearn.cluster import KMeans
 from scikitplot.metrics import plot_silhouette
 
 # Declaration of constants
-kmeans_kwargs = dict(n_clusters=n_clusters, random_state=777)
+cluster_kwargs = dict(n_clusters=n_clusters, random_state=777)
 
 def cluster_and_plot_pca(df,
                          cluster_range=np.arange(2, 9),
                          ClusterAlgorithm=KMeans,
-                         cluster_kwargs=kmeans_kwargs):
+                         cluster_kwargs=cluster_kwargs):
     '''An unsupervised learning approach to visualizing the number of clusters
-    that are appropriate for a given dataset `df`.
+    that are appropriate for a given dataset `df`.  If using another
+    ClusterAlgorithm than KMeans it must accept the kwarg n_clusters.
+
+    Data should have no missing values and all columns should have already
+    been transformed into numeric datatypes (i.e. converting categorical
+    features into one-hot encoded vectors).
+
+    Example:
+        from sklearn.cluster import MiniBatchKMeans
+
+        clust_kwargs = dict(random_state=77)
+        cluster_and_plot_pca(wine_df,
+                            ClusterAlgorithm=MiniBatchKMeans,
+                            cluster_kwargs=clust_kwargs)
     '''
     pca = PCA(n_components=2, random_state=777)
-    X_pca = pd.DataFrame(pca.fit(df.fillna(0)).transform(df.fillna(0)))
+    X_pca = pd.DataFrame(pca.fit(df).transform(df))
 
     for n_clusters in cluster_range:
         clust_col = "clusters_"+str(n_clusters)
 
         # perform kmeans
-        clust = ClusterAlgorithm(**cluster_kwargs)
+        clust = ClusterAlgorithm(n_clusters=n_clusters, **cluster_kwargs)
         clust.fit(df)
-        X_pca[clust_col] = kmeans.labels_
+        X_pca[clust_col] = clust.labels_
 
         # plot PCA with segments
         fig, ax = plt.subplots()
@@ -46,7 +59,7 @@ def cluster_and_plot_pca(df,
         ax = plt.gca()
         ax.grid(alpha=.4)
         sns.despine()
-        ax.set_title(f"Silhouette Plot Clusters={n_clusters}", size=18)
+        ax.set_title(f"Silhouette Plot Clusters={n_clusters}", size=12)
 
     plt.show()
 
