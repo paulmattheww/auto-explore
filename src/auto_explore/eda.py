@@ -11,7 +11,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from pandas_profiling import ProfileReport
 
-from .viz import correlation_heatmap
+from .viz import correlation_heatmap, cluster_and_plot_pca
 from .featexp import *
 
 class AutopilotExploratoryAnalysis:
