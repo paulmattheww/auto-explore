@@ -6,10 +6,36 @@ from numba.decorators import jit
 import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from scikitplot.metrics import plot_silhouette
+from yellowbrick.text import TSNEVisualizer
 
 # Declaration of constants
-cluster_kwargs = dict(n_clusters=n_clusters, random_state=777)
+cluster_kwargs = dict(random_state=777)
+text_kwargs = dict(ngram_range=(1,3), min_df=3, max_features=1000)
+
+
+def text_cluster_tsne(text_vector,
+                      TextVectorizer=TfidfVectorizer,
+                      text_kwargs=text_kwargs,
+                      n_clusters=10,
+                      labels=None):
+    '''
+    '''
+    tfidf = TextVectorizer(text_kwargs)
+    docs = tfidf.fit_transform(text_vector)
+    tsne = TSNEVisualizer()
+
+    if labels is None:
+        # derive clusters if labels not provided
+        clusters = KMeans(n_clusters=n_clusters)
+        clusters.fit(docs)
+        tsne.fit(docs, ["c{}".format(c) for c in clusters.labels_])
+    else:
+        tsne.fit(docs, labels)
+
+    tsne.poof()
+
 
 def cluster_and_plot_pca(df,
                          cluster_range=np.arange(2, 9),
@@ -41,6 +67,8 @@ def cluster_and_plot_pca(df,
             and MiniBatchKMeans.
         cluster_kwargs <dict>: kwargs for ClusterAlgorithm, not including
             num_clusters.
+    RETURNS:
+        None.  Plots are printed to the console.
     '''
     pca = PCA(n_components=2, random_state=777)
     X_pca = pd.DataFrame(pca.fit(df).transform(df))
