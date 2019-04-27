@@ -20,7 +20,20 @@ def text_cluster_tsne(text_vector,
                       text_kwargs=text_kwargs,
                       n_clusters=10,
                       labels=None):
-    '''
+    '''Uses a TextVectorizer to transform a the text contained (at the sentence
+    or paragraph level) in the text_vector arg to produce a TSNE visualization.
+    The label for the final plot is clusters produced from KMeans if labels
+    are not passed.
+
+    ARGS:
+        text_vector <np.array>: Vector of text units.  Must be type str.
+    KWARGS:
+        TextVectorizer <sklearn.feature_extraction.text>: Transformer.
+        text_kwargs <dict>: kwargs to pass to TextVectorizer
+        n_clusters <int>: If not using labels, number of clusters in KMeans
+        labels <np.array>: True categorical labels.  Discrete.
+    RETURNS:
+        None, prints visualizations to the console.  
     '''
     txt_vctzr = TextVectorizer(**text_kwargs)
     docs = txt_vctzr.fit_transform(text_vector)
