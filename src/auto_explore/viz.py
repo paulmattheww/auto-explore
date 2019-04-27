@@ -1,3 +1,4 @@
+# Import statements
 import matplotlib.pyplot as plt
 import seaborn as sns
 from numba import double
@@ -7,6 +8,7 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from scikitplot.metrics import plot_silhouette
 
+# Declaration of constants
 kmeans_kwargs = dict(n_clusters=n_clusters, random_state=777)
 
 def cluster_and_plot_pca(df,
@@ -14,7 +16,7 @@ def cluster_and_plot_pca(df,
                          ClusterAlgorithm=KMeans,
                          cluster_kwargs=kmeans_kwargs):
     '''An unsupervised learning approach to visualizing the number of clusters
-    that are appropriate for a given dataset `df`.  
+    that are appropriate for a given dataset `df`.
     '''
     pca = PCA(n_components=2, random_state=777)
     X_pca = pd.DataFrame(pca.fit(df.fillna(0)).transform(df.fillna(0)))
@@ -55,20 +57,28 @@ def correlation_heatmap(df, cutoff=None, title='', outpath=None, type='pearson')
     of ~5% speed).
 
     ARGS:
-
+        df <pd.DataFrame> or <dd.DataFrame>: Data of numeric vectors w/o
+            missing values.
     KWARGS:
-
+        cutoff <float>: Absolute value of cutoff to visualize a given
+            correlation between two vectors.  0<x<1.
+        title <str>: Title of the heatmap plot.
+        outpath <str>: Out path with extension to save image file to.
+        type <str>: 'pearson' or 'spearman'
     RETURNS:
+        df_corr <pd.DataFrame>: Correlation matrix with variable names.
     '''
+    if type not in ['pearson', 'spearman']:
+        type = 'pearson'
     df_corr = df.corr(type)
     np.fill_diagonal(df_corr.values, 0)
-    if cutoff != None:
+    if cutoff is not None:
         for col in df_corr.columns:
             df_corr.loc[df_corr[col].abs() <= cutoff, col] = 0
     fig, ax = plt.subplots(figsize=(20, 15))
     sns.heatmap(df_corr, ax=ax, cmap='RdBu_r')
     plt.suptitle(title, size=18)
-    if outpath == None:
+    if outpath is None:
         pass
     else:
         plt.savefig(outpath)
