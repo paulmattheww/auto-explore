@@ -1,3 +1,5 @@
+.ipynb_checkpoints/
+live-tests.ipynb
 *.py[cod]
 
 # C extensions
