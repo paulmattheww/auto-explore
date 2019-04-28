@@ -9,7 +9,7 @@ synonyms:	conscientiousness, assiduousness, assiduity, industriousness, rigor,
 '''
 
 
-def get_df_dtypes(df):
+def get_df_columns_dtypes(df):
     '''Analyzes the datatypes of a pd.DataFrame and returns the inferred
     datatype of each column as a {'col': 'dtype'}.  Type value is returned as
     a str.

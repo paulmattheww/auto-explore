@@ -4,7 +4,9 @@ Class definitions for automated EDA.
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from .diligence import get_df_dtypes, get_numeric_columns
+from .diligence import get_df_columns_dtypes
+from .diligence import get_numeric_columns
+from .diligence import get_str_or_object_columns
 
 class AutopilotExploratoryAnalysis:
     def __init__(self, df, bin_cols, cat_cols, num_cols, text_cols,
@@ -39,18 +41,21 @@ class AutopilotExploratoryAnalysis:
         pass
 
     def characterize_missing_values(self):
-        pass
+        '''Returns a pd.Series with the column name as the key and the percent
+        of the column that is missing as the value.
+        '''
+        return self.df.isna().sum() / self.df.shape[0]
 
     def fill_missing_values(self, groupby_cols=None):
-        '''Several methods to impute missing data
-
-        Depends on characterization of nulls.
+        '''Several methods to impute missing data.  Depends on characterization
+        of missing values.
         '''
         pass
 
-    def high_level_profile(self):
-        '''Run Pandas_Profiler'''
-        pass
+    def profile_report(self):
+        '''Runs pandas_profiler.ProfileReport on self.df
+        '''
+        return ProfileReport(self.df)
 
     def identify_reject_columns(self):
         pass
