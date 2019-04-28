@@ -10,7 +10,7 @@ jupyter = "*"
 pandas = "*"
 
 [packages]
-# auto_explore = {editable = true,path = "."}
+auto_explore = {editable = true,path = "."}
 sklearn = "*"
 pandas-profiling = "*"
 featexp = "*"
@@ -19,6 +19,7 @@ pandas = "*"
 dask = "*"
 numba = "*"
 yellowbrick = "*"
+scikit-plot = "*"
 
 [requires]
 python_version = "3.7"
