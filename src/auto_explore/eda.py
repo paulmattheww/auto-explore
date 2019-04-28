@@ -1,8 +1,18 @@
 '''
-Class definitions for automated EDA.
+Extends work from:
+ - https://github.com/pandas-profiling/pandas-profiling
+ - https://github.com/abhayspawar/featexp
+
+ Use caching.  Use Dask.
 '''
+from functools import wraps
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from pandas_profiling import ProfileReport
+
+from .viz import correlation_heatmap, cluster_and_plot_pca
+from .featexp import *
 
 class AutopilotExploratoryAnalysis:
     '''
@@ -11,27 +21,37 @@ class AutopilotExploratoryAnalysis:
         - Output to console or notebook vs. HTML
     '''
     def __init__(self, df, bin_cols, cat_cols, num_cols, text_cols,
-                target_col=None, hue=None, na_tolerance=.10, time_dim=None,
-                dask=True):
+                target_col=None, hue=None, time_dim=None,
+                dask=True, dask_kwargs=None):
         '''
         ARGS:
-            bin_cols: <list> Binary columns.  Vectors must adhere to
+            bin_cols <list>: Binary columns.  Vectors must adhere to
                 arrays of int, float or bool.  Transformed to int.
-            cat_cols: <list>
-            num_cols: <list>
-            text_cols: <list>
+            cat_cols <list>: Categorical columns.
+            num_cols <list>: Numerical (float or int) columns.
+            text_cols <list>: String columns of free text.
         KWARGS:
-            target_col=None, hue=None, na_tolerance=.10, time_dim=None, dask=True
+            target_col <str>: Target column that will be modeled.
+            hue <str>: Optional -- for visualization.  Group to viz over.
+            dask <bool>: Whether to use Dask or not (use with larget datasets)
         '''
-        pass
+        self.df = df
+        self.bin_cols = bin_cols
+        self.cat_cols = cat_cols
+        self.num_cols = num_cols
+        self.text_cols = text_cols
+        for kwarg, value in kwargs.items():
+            setattr(self, f'{kwarg}', value)
 
     @property
     def split_data(self):
         pass
 
+    @staticmethod
     def modify_notebook_configuration(self):
         pass
 
+    @staticmethod
     def characterize_missing_values(self):
         pass
 
@@ -47,6 +67,7 @@ class AutopilotExploratoryAnalysis:
         pass
 
     def identify_reject_columns(self):
+        '''Relies on self.high_level_profile method'''
         pass
 
     def characterize_distributions(self):

@@ -15,7 +15,8 @@ featexp = "*"
 speedml = "*"
 pandas = "*"
 dask = "*"
-
+numba = "*"
+yellowbrick = "*"
 
 [requires]
 python_version = "3.7"
