@@ -11,7 +11,7 @@ def get_wine_data():
     wine = load_wine()
     wine_df = pd.DataFrame(wine['data'], columns=wine['feature_names'])
     wine_df['target'] = wine['target']
-    return
+    return wine_df
 
 class TestAutopilotEDA(TestCase):
     def __init__(self):
