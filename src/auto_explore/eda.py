@@ -1,73 +1,63 @@
 '''
-Extends work from:
- - https://github.com/pandas-profiling/pandas-profiling
- - https://github.com/abhayspawar/featexp
-
- Use caching.  Use Dask.
+Class definitions for automated EDA.
 '''
-from functools import wraps
-
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from pandas_profiling import ProfileReport
 
-from .viz import correlation_heatmap, cluster_and_plot_pca
-from .featexp import *
+from .diligence import get_df_columns_dtypes
+from .diligence import get_numeric_columns
+from .diligence import get_str_or_object_columns
 
 class AutopilotExploratoryAnalysis:
-    '''
-    Questions that need answering:
-        - How the data should exist when feeding it in
-        - Output to console or notebook vs. HTML
-    '''
     def __init__(self, df, bin_cols, cat_cols, num_cols, text_cols,
-                target_col=None, hue=None, time_dim=None,
-                dask=True, dask_kwargs=None):
-        '''
+                target_col=None, hue=None, na_tolerance=.10, time_dim=None,
+                dask=True):
+        '''It is best to pass in the df in a format that is ready for analysis.
+        Ideally, missing values have already been filled in to extract a
+        reasonable first-pass analysis.
+
         ARGS:
             bin_cols <list>: Binary columns.  Vectors must adhere to
                 arrays of int, float or bool.  Transformed to int.
             cat_cols <list>: Categorical columns.
-            num_cols <list>: Numerical (float or int) columns.
-            text_cols <list>: String columns of free text.
+            num_cols <list>: Numeric columns.
+            text_cols <list>: Text columns.
         KWARGS:
-            target_col <str>: Target column that will be modeled.
-            hue <str>: Optional -- for visualization.  Group to viz over.
-            dask <bool>: Whether to use Dask or not (use with larget datasets)
+            target_col=None, hue=None, na_tolerance=.10, time_dim=None, dask=True
         '''
         self.df = df
         self.bin_cols = bin_cols
         self.cat_cols = cat_cols
         self.num_cols = num_cols
         self.text_cols = text_cols
-        for kwarg, value in kwargs.items():
-            setattr(self, f'{kwarg}', value)
+        for k, v in kwargs.items():
+            setattr(self, f'{k}', v)
 
     @property
     def split_data(self):
         pass
 
-    @staticmethod
     def modify_notebook_configuration(self):
         pass
 
-    @staticmethod
     def characterize_missing_values(self):
-        pass
+        '''Returns a pd.Series with the column name as the key and the percent
+        of the column that is missing as the value.
+        '''
+        return self.df.isna().sum() / self.df.shape[0]
 
     def fill_missing_values(self, groupby_cols=None):
-        '''Several methods to impute missing data
-
-        Depends on characterization of nulls.
+        '''Several methods to impute missing data.  Depends on characterization
+        of missing values.
         '''
         pass
 
-    def high_level_profile(self):
-        '''Run Pandas_Profiler'''
-        pass
+    def profile_report(self):
+        '''Runs pandas_profiler.ProfileReport on self.df
+        '''
+        return ProfileReport(self.df)
 
     def identify_reject_columns(self):
-        '''Relies on self.high_level_profile method'''
         pass
 
     def characterize_distributions(self):
