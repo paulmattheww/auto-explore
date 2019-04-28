@@ -7,21 +7,19 @@ from sklearn.model_selection import train_test_split
 from .diligence import get_df_dtypes, get_numeric_columns
 
 class AutopilotExploratoryAnalysis:
-    '''
-    Questions that need answering:
-        - How the data should exist when feeding it in
-        - Output to console or notebook vs. HTML
-    '''
     def __init__(self, df, bin_cols, cat_cols, num_cols, text_cols,
                 target_col=None, hue=None, na_tolerance=.10, time_dim=None,
                 dask=True):
-        '''
+        '''It is best to pass in the df in a format that is ready for analysis.
+        Ideally, missing values have already been filled in to extract a
+        reasonable first-pass analysis.
+
         ARGS:
-            bin_cols: <list> Binary columns.  Vectors must adhere to
+            bin_cols <list>: Binary columns.  Vectors must adhere to
                 arrays of int, float or bool.  Transformed to int.
-            cat_cols: <list>
-            num_cols: <list>
-            text_cols: <list>
+            cat_cols <list>: Categorical columns.
+            num_cols <list>: Numeric columns.
+            text_cols <list>: Text columns.
         KWARGS:
             target_col=None, hue=None, na_tolerance=.10, time_dim=None, dask=True
         '''
