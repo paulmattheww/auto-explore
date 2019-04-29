@@ -22,6 +22,19 @@ cluster_kwargs = dict(random_state=777)
 text_kwargs = dict(ngram_range=(1,3), min_df=3, max_features=1000)
 
 
+def categorical_frequency_distribution(df, cat_cols, top_n=None):
+    '''Characterizes the frequency distribution of either the top_n
+    most populous distinct categorical values within a given cat_col.
+    Specify top_n if you see there are too many unique categorical values
+    in your dataset.
+    '''
+    for col in cat_cols:
+        if top_n:
+            (df[col].value_counts().head(top_n) / df.shape[0]).plot.barh(title=f"Frequency Distribution of {col}")
+        else:
+            (df[col].value_counts() / df.shape[0]).plot.barh(title=f"Frequency Distribution of {col}")
+        plt.show()
+
 
 def plot_tseries_over_group_with_histograms(df, xcol, ycol,
                                             grpcol, title_prepend='{}',
