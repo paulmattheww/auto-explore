@@ -10,6 +10,10 @@ from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from scikitplot.metrics import plot_silhouette
 from yellowbrick.text import TSNEVisualizer
+import matplotlib as mpl
+
+mpl.rcParams['figure.figsize'] = (13, 9)
+sns.set_style("whitegrid")
 
 # Declaration of constants
 cluster_kwargs = dict(random_state=777)
@@ -44,10 +48,11 @@ def text_cluster_tsne(text_vector,
         # derive clusters if labels not provided
         clusters = KMeans(n_clusters=n_clusters)
         clusters.fit(docs)
-        tsne.fit(docs, ["c{}".format(c) for c in clusters.labels_])
+        tsne.fit(docs, ["cluster_{}".format(c) for c in clusters.labels_])
     else:
+        # otherwise use labels
         tsne.fit(docs, labels)
-
+    sns.despine()
     tsne.poof()
 
 
