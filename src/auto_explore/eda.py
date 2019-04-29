@@ -37,9 +37,6 @@ class AutopilotExploratoryAnalysis:
     def split_data(self):
         pass
 
-    def modify_notebook_configuration(self):
-        pass
-
     def characterize_missing_values(self):
         '''Returns a pd.Series with the column name as the key and the percent
         of the column that is missing as the value.
@@ -52,6 +49,7 @@ class AutopilotExploratoryAnalysis:
         '''
         pass
 
+    @property
     def profile_report(self):
         '''Runs pandas_profiler.ProfileReport on self.df
         '''

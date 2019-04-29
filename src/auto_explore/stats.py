@@ -1,7 +1,7 @@
 
 import scipy import scipy.stats
 
-def identify_best_distribution(y):
+def characterize_possible_distributions(y):
     '''Uses log-likelihood to determine which distribution is a best fit
     for a given vector y.
     '''

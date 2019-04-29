@@ -31,9 +31,9 @@ Overview
     :alt: PyPI Package latest release
     :target: https://pypi.org/project/auto-explore
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/paulmattheww/auto-explore/v0.1.0.svg
+.. |commits-since| image:: https://img.shields.io/github/commits-since/paulmattheww/auto-explore/v0.1.1.svg
     :alt: Commits since latest release
-    :target: https://github.com/paulmattheww/auto-explore/compare/v0.1.0...master
+    :target: https://github.com/paulmattheww/auto-explore/compare/v0.1.1...master
 
 .. |wheel| image:: https://img.shields.io/pypi/wheel/auto-explore.svg
     :alt: PyPI Wheel
