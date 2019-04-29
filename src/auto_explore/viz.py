@@ -28,16 +28,17 @@ def categorical_frequency_distribution(df, cat_cols, top_n=None):
     Specify top_n if you see there are too many unique categorical values
     in your dataset.
     '''
+    top_n = top_n or df.shape[0]
     for col in cat_cols:
-        if top_n:
-            (df[col].value_counts().head(top_n) / df.shape[0]).plot.barh(title=f"Frequency Distribution of {col}")
-        else:
-            (df[col].value_counts() / df.shape[0]).plot.barh(title=f"Frequency Distribution of {col}")
+        title = f"Frequency Distribution of {col}"
+        (df[col].value_counts().head(top_n) / df.shape[0]).plot.barh(title=title)
+        ax = plt.gca()
+        ax.grid(alpha=.4)
         plt.show()
 
 
-def plot_tseries_over_group_with_histograms(df, xcol, ycol,
-                                            grpcol, title_prepend='{}',
+def plot_tseries_over_group_with_histograms(df, xcol, ycol, grpcol, 
+                                            title_prepend='{}',
                                             labs=None, x_angle=0, labelpad=60,
                                             window=15, ignore_cols=[]):
     '''
