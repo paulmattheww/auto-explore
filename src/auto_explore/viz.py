@@ -23,10 +23,13 @@ text_kwargs = dict(ngram_range=(1,3), min_df=3, max_features=1000)
 
 
 def categorical_frequency_distribution(df, cat_cols, top_n=None):
-    '''Characterizes the frequency distribution of either the top_n
-    most populous distinct categorical values within a given cat_col.
-    Specify top_n if you see there are too many unique categorical values
-    in your dataset.
+    '''Characterizes the frequency distribution of either the top_n most
+    populous distinct categorical values within a given cat_col.  Specify top_n
+    if you see there are too many unique categorical values in your dataset.
+
+    ARGS:
+    KWARGS:
+    RETURNS:
     '''
     top_n = top_n or df.shape[0]
     for col in cat_cols:
@@ -37,7 +40,7 @@ def categorical_frequency_distribution(df, cat_cols, top_n=None):
         plt.show()
 
 
-def plot_tseries_over_group_with_histograms(df, xcol, ycol, grpcol, 
+def plot_tseries_over_group_with_histograms(df, xcol, ycol, grpcol,
                                             title_prepend='{}',
                                             labs=None, x_angle=0, labelpad=60,
                                             window=15, ignore_cols=[]):
@@ -59,14 +62,15 @@ def plot_tseries_over_group_with_histograms(df, xcol, ycol, grpcol,
                                                     ignore_cols=onehot_cols)
 
     ARGS:
-        - df: pd.DataFrame containing datetime and series to plot
-        - xcol: str of column name in df for datetime series
-        - ycol: str of column name in df for tseries
+        df <pd.DataFrame>: containing datetime and series to plot
+        xcol <str>: of column name in df for datetime series
+        ycol <str>: of column name in df for tseries
     KWARGS:
-        - grpcol: str of column name in df of group over which to plot
-        - labs: dict of xlab, ylab
-        - title_prepend: str containing "{}" that prepends group names in title
+        grpcol <str>: str of column name in df of group over which to plot
+        labs <dict>: of xlab, ylab
+        title_prepend <str>: containing "{}" that prepends group names in title
     RETURNS:
+        None, plots a time series vector over groups with histogram on y axis.
     '''
     years = mdates.YearLocator()    # every year
     months = mdates.MonthLocator()  # every month
