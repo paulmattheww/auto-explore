@@ -7,6 +7,7 @@ package can be found at the link below:
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
+import seaborn as sns
 
 def get_grouped_data(input_data, feature, target_col, bins, cuts=0):
     """
@@ -41,9 +42,6 @@ def get_grouped_data(input_data, feature, target_col, bins, cuts=0):
             else:
                 reduced_cuts = reduced_cuts + 1
             prev_cut = next_cut
-
-        # if reduced_cuts>0:
-        #     print('Reduced the number of bins due to less variation in feature')
         cut_series = pd.cut(input_data[feature], cuts)
     else:
         cut_series = pd.cut(input_data[feature], cuts)
@@ -90,7 +88,7 @@ def draw_plots(input_data, feature, target_col, trend_correlation=None):
     :return: Draws trend plots for feature
     """
     trend_changes = get_trend_changes(grouped_data=input_data, feature=feature, target_col=target_col)
-    plt.figure(figsize=(12, 5))
+    plt.figure(figsize=(13, 8))
     ax1 = plt.subplot(1, 2, 1)
     ax1.plot(input_data[target_col + '_mean'], marker='o')
     ax1.set_xticks(np.arange(len(input_data)))
@@ -98,6 +96,8 @@ def draw_plots(input_data, feature, target_col, trend_correlation=None):
     plt.xticks(rotation=45)
     ax1.set_xlabel('Bins of ' + feature)
     ax1.set_ylabel('Average of ' + target_col)
+    ax1.grid(alpha=.4)
+    sns.despine()
     comment = "Trend changed " + str(trend_changes) + " times"
     if trend_correlation == 0:
         comment = comment + '\n' + 'Correlation with train trend: NA'
@@ -115,8 +115,10 @@ def draw_plots(input_data, feature, target_col, trend_correlation=None):
     plt.xticks(rotation=45)
     ax2.set_xlabel('Bins of ' + feature)
     ax2.set_ylabel('Bin-wise sample size')
+    ax2.grid(alpha=.4)
     plt.title('Samples in bins of ' + feature)
     plt.tight_layout()
+    sns.despine()
     plt.show()
 
 

@@ -4,6 +4,8 @@ Class definitions for automated EDA.
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
+from .featexp import get_trend_stats, get_univariate_plots
+
 from .diligence import get_df_columns_dtypes
 from .diligence import get_numeric_columns
 from .diligence import get_str_or_object_columns
@@ -35,7 +37,10 @@ class AutopilotExploratoryAnalysis:
 
     @property
     def split_data(self):
-        pass
+        dat = dict()
+        splt_kwargs = dict(train_size=.5, random_state=777)
+        d1, d2 = train_test_split(self.df, **splt_kwargs)
+        d2, d2 =
 
     def characterize_missing_values(self):
         '''Returns a pd.Series with the column name as the key and the percent
@@ -51,16 +56,22 @@ class AutopilotExploratoryAnalysis:
 
     @property
     def profile_report(self):
-        '''Runs pandas_profiler.ProfileReport on self.df
+        '''Runs pandas_profiler.ProfileReport on self.df to return an HTML
+        rendering of the data's summary.  Also a property.
         '''
         return ProfileReport(self.df)
 
-    def identify_reject_columns(self):
-        pass
+    def identify_reject_columns(self, threshold=.90):
+        '''Leverages pandas_profiler.ProfileReport object of self to use the
+        method get_rejected_variables.  Returns all variables that are stable
+        insofar as they are not highly correlated with other variables.
+        '''
+        return self.profile_report.get_rejected_variables(threshold=threshold)
 
     def characterize_distributions(self):
         '''Determine what each numeric column's distribution is
-        and return recommended scaling techniques'''
+        and return recommended scaling techniques.
+        '''
         pass
 
     def scale_numeric_columns(self):
@@ -73,7 +84,10 @@ class AutopilotExploratoryAnalysis:
         pass
 
     def generate_correlation_heatmap(self):
-        pass
+        if self.target_col is None:
+            raise ValueError("No target_col specified.")
+        else:
+            
 
     def generate_univarite_plots(self):
         pass

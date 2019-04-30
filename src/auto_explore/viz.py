@@ -14,6 +14,7 @@ import matplotlib as mpl
 import matplotlib.dates as mdates
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
+# Settings preferred
 mpl.rcParams['figure.figsize'] = (13, 9)
 sns.set_style("whitegrid")
 
@@ -28,8 +29,12 @@ def categorical_frequency_distribution(df, cat_cols, top_n=None):
     if you see there are too many unique categorical values in your dataset.
 
     ARGS:
+        df <pd.DataFrame>: Data containing cat_cols plus potentially more.
+        cat_cols <list>: List of columns with discrete categories.
     KWARGS:
+        top_n <int>: Top N categories to show if there are too manuy.
     RETURNS:
+        None, outputs plots to console.  
     '''
     top_n = top_n or df.shape[0]
     for col in cat_cols:
