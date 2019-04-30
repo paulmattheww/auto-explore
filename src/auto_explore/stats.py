@@ -15,7 +15,7 @@ def best_theoretical_distribution(data, bins=100, dist_names=DIST_NAMES):
     KWARGS:
         bins <int>: Number of bins to use in np.histogram.
     RETURNS:
-        param_dict {dict}: results of dist.fit(data) and the sum of squared
+        param_dict {pd.Series}: results of dist.fit(data) and the sum of squared
             errors for each of the distributions in dist_names
     '''
     # Get histogram of original data

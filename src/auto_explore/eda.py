@@ -91,7 +91,7 @@ class AutopilotExploratoryAnalysis:
     def generate_correlation_heatmap(self, univariate_kwargs):
         pass
 
-    def generate_univarite_plots(self, features_list):
+    def generate_univarite_plots(self, features_list=None):
         '''Leverages featexp (with modifications made inside of this repo) to
         plot univariate plots for both a train and test dataset for comparison
         '''
