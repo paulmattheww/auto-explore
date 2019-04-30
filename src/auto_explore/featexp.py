@@ -1,7 +1,10 @@
-'''Extracted on 04/25/2019 for expansion.  Up to date code for the `featexp`
+'''Code extracted on 04/25/2019 for expansion.  Up to date code for the `featexp`
 package can be found at the link below:
 
     https://github.com/abhayspawar/featexp/blob/master/featexp/base.py
+
+Extracting the code was deliberate in an attempt to improve some of the plotting
+capabilities offered by the library.
 '''
 
 import pandas as pd
