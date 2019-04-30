@@ -1,13 +1,45 @@
+import requests
+from datetime import datetime
+
 import tensorflow as tf
 import tensorflow_hub as hub
-
 import pandas as pd
-import requests
+import pandas_datareader.data as web
+
+
+def fetch_fred_data(series_list,
+                  start=datetime(2011, 1, 1), end=datetime.now()):
+    '''Calls the pandas_datareader API to fetch daily price signals for each
+    item in series_list (stock tickers and index names in the Saint Louis
+    Federal Reserve's FRED API).
+
+    A good robust cross-section might look like below:
+        series_list = ['SP500', 'NASDAQCOM', 'DJIA', 'RU2000PR',
+                      'BOGMBASEW', 'DEXJPUS', 'DEXUSEU', 'DEXCHUS', 'DEXUSAL',
+                      'VIXCLS',
+                      'USDONTD156N', 'USD1MTD156N', 'USD3MTD156N', 'USD12MD156N',
+                      'BAMLHYH0A0HYM2TRIV', 'BAMLCC0A1AAATRIV',
+                      'GOLDAMGBD228NLBM',
+                      'DCOILWTICO',
+                      'MHHNGSP', # natural gas
+                      'VXXLECLS'] # cboe energy sector etf volatility
+    '''
+    fred_df = pd.DataFrame()
+    for i, series in enumerate(series_list):
+        print('Calling FRED API for Series:  {}'.format(series))
+        if i == 0:
+            fred_df = web.get_data_fred(series, start, end)
+        else:
+            _df = web.get_data_fred(series, start, end)
+            fred_df = fred_df.join(_df, how='outer')
+    return fred_df
+
+
 
 def fetch_google_geocode(address, api_key=None, return_full_response=False):
     '''Uses a str address and an api_key for Google Maps (if under 2500
     records being transformed in 24 hours) and returns the geocode and
-    normalized address information.  
+    normalized address information.
 
         Example:
             api_key = 'API KEY NUMBER SEVEN'

@@ -20,6 +20,9 @@ dask = "*"
 numba = "*"
 yellowbrick = "*"
 scikit-plot = "*"
+pandas_datareader = "*"
+tensorflow = "*"
+tensorflow_hub = "*"
 
 [requires]
 python_version = "3.7"
