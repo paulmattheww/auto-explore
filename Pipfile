@@ -8,6 +8,7 @@ pytest = "*"
 pytest-cov = "*"
 jupyter = "*"
 pandas = "*"
+ipython = "*"
 
 [packages]
 auto-explore = {editable = true,path = "."}

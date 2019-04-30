@@ -37,10 +37,11 @@ class AutopilotExploratoryAnalysis:
 
     @property
     def split_data(self):
-        dat = dict()
+        '''Splits self.df
+        '''
         splt_kwargs = dict(train_size=.5, random_state=777)
-        d1, d2 = train_test_split(self.df, **splt_kwargs)
-        d2, d2 = 
+        return train_test_split(self.df, **splt_kwargs)
+
 
     def characterize_missing_values(self):
         '''Returns a pd.Series with the column name as the key and the percent
