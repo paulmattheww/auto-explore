@@ -40,7 +40,7 @@ class AutopilotExploratoryAnalysis:
         dat = dict()
         splt_kwargs = dict(train_size=.5, random_state=777)
         d1, d2 = train_test_split(self.df, **splt_kwargs)
-        d2, d2 =
+        d2, d2 = 
 
     def characterize_missing_values(self):
         '''Returns a pd.Series with the column name as the key and the percent
@@ -83,11 +83,11 @@ class AutopilotExploratoryAnalysis:
     def convert_categoricals(self):
         pass
 
-    def generate_correlation_heatmap(self):
+    def generate_correlation_heatmap(self, univariate_kwargs):
         if self.target_col is None:
             raise ValueError("No target_col specified.")
         else:
-            
+            get_univariate_plots(data=self.split_data[])
 
     def generate_univarite_plots(self):
         pass
