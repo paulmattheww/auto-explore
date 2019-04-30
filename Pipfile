@@ -8,9 +8,10 @@ pytest = "*"
 pytest-cov = "*"
 jupyter = "*"
 pandas = "*"
+ipython = "*"
 
 [packages]
-auto_explore = {editable = true,path = "."}
+auto-explore = {editable = true,path = "."}
 sklearn = "*"
 pandas-profiling = "*"
 featexp = "*"

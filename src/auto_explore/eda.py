@@ -4,6 +4,8 @@ Class definitions for automated EDA.
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
+from .featexp import get_trend_stats, get_univariate_plots
+from .stats import best_theoretical_distribution
 from .diligence import get_df_columns_dtypes
 from .diligence import get_numeric_columns
 from .diligence import get_str_or_object_columns
@@ -35,7 +37,12 @@ class AutopilotExploratoryAnalysis:
 
     @property
     def split_data(self):
-        pass
+        '''Splits self.df into a dict of evenly split data for use in data
+        exploration tasks, such as univariate plots.
+        '''
+        splt_kwargs = dict(train_size=.5, random_state=777)
+        return train_test_split(self.df, **splt_kwargs)
+
 
     def characterize_missing_values(self):
         '''Returns a pd.Series with the column name as the key and the percent
@@ -51,17 +58,26 @@ class AutopilotExploratoryAnalysis:
 
     @property
     def profile_report(self):
-        '''Runs pandas_profiler.ProfileReport on self.df
+        '''Runs pandas_profiler.ProfileReport on self.df to return an HTML
+        rendering of the data's summary.  Also a property.
         '''
         return ProfileReport(self.df)
 
-    def identify_reject_columns(self):
-        pass
+    def identify_reject_columns(self, threshold=.90):
+        '''Leverages pandas_profiler.ProfileReport object of self to use the
+        method get_rejected_variables.  Returns all variables that are stable
+        insofar as they are not highly correlated with other variables.
+        '''
+        return self.profile_report.get_rejected_variables(threshold=threshold)
 
     def characterize_distributions(self):
-        '''Determine what each numeric column's distribution is
-        and return recommended scaling techniques'''
-        pass
+        '''Determine what each numeric column's distribution is and return
+        recommended a DataFrame of the best distributions.
+        '''
+        dist_dict = dict()
+        for num_col in self.num_cols:
+            dist_dict[num_col] = best_theoretical_distribution(self.df[num_col])
+        return pd.DataFrame(dist_dict)
 
     def scale_numeric_columns(self):
         pass
@@ -72,11 +88,22 @@ class AutopilotExploratoryAnalysis:
     def convert_categoricals(self):
         pass
 
-    def generate_correlation_heatmap(self):
+    def generate_correlation_heatmap(self, univariate_kwargs):
         pass
 
-    def generate_univarite_plots(self):
-        pass
+    def generate_univarite_plots(self, features_list):
+        '''Leverages featexp (with modifications made inside of this repo) to
+        plot univariate plots for both a train and test dataset for comparison
+        '''
+        if self.target_col is None:
+            raise ValueError("No target_col specified.")
+        if features_list is None:
+            features_list = self.num_cols
+        kwargs = dict(data=self.split_data[0],
+                      target_col=self.target_col,
+                      data_test=self.split_data[1],
+                      features_list=features_list)
+        get_univariate_plots(**kwargs)
 
     def derive_features_from_data(self, feature_derivation_func):
         pass
