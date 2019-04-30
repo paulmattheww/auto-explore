@@ -23,6 +23,45 @@ cluster_kwargs = dict(random_state=777)
 text_kwargs = dict(ngram_range=(1,3), min_df=3, max_features=1000)
 
 
+def target_distribution_over_binary_groups(df, binary_cols, target_col,
+                                          plot_type='boxenplot',
+                                          plot_kwargs={}):
+    '''For use during feature engineering.  Pass a DataFrame with a list of
+    `binary_cols` that represent the names of columns that are binary categories.
+    The `target_col` str is the variable you are trying to model.  Requires
+    seaborn >= 0.9.0.
+
+    ARGS:
+        df <pd.DataFrame>: DataFrame that contains all columns passed
+        binary_cols <list>: List of binary columns as either int or bool
+        target_col <str> or <list>: Name of target column. assert len(list) == 1
+    KWARGS:
+        plot_type <str>: Either 'boxenplot', 'boxplot', or 'violinplot'
+        plot_kwargs <dict>: Keyword arguments for plot_type passed
+    RETURNS:
+        None, plots to the console.
+    '''
+    for col in binary_cols:
+        if plot_type=='boxenplot':
+            sns.boxenplot(y=df[target_col], x=df[col], **plot_kwargs)
+        elif plot_type=='violinplot':
+            sns.violinplot(y=df[target_col], x=df[col], **plot_kwargs)
+        else:
+            sns.boxplot(y=df[target_col], x=df[col], **plot_kwargs)
+        ax = plt.gca()
+        mu0, mu1 = df[target_col].groupby(df[col]).mean()
+        sd0, sd1 = df[target_col].groupby(df[col]).std()
+        ncol = df.loc[df[col]==1].shape[0]
+        ax.axhline(mu0, label=f'mean = {round(mu0, 2)}|{col} = 0', color='blue', linestyle=':')
+        ax.axhline(mu1, label=f'mean = {round(mu1, 2)}|{col} = 1 with {ncol} observations',
+                   color='orange', linestyle='-.')
+        ax.grid(alpha=.4)
+        ax.set_title(col)
+        sns.despine()
+        ax.legend(loc='best')
+        plt.show()
+
+
 def categorical_frequency_distribution(df, cat_cols, top_n=None):
     '''Characterizes the frequency distribution of either the top_n most
     populous distinct categorical values within a given cat_col.  Specify top_n
@@ -34,7 +73,7 @@ def categorical_frequency_distribution(df, cat_cols, top_n=None):
     KWARGS:
         top_n <int>: Top N categories to show if there are too manuy.
     RETURNS:
-        None, outputs plots to console.  
+        None, outputs plots to console.
     '''
     top_n = top_n or df.shape[0]
     for col in cat_cols:

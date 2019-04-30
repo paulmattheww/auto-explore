@@ -5,7 +5,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 from .featexp import get_trend_stats, get_univariate_plots
-
+from .stats import best_theoretical_distribution
 from .diligence import get_df_columns_dtypes
 from .diligence import get_numeric_columns
 from .diligence import get_str_or_object_columns
@@ -37,7 +37,8 @@ class AutopilotExploratoryAnalysis:
 
     @property
     def split_data(self):
-        '''Splits self.df
+        '''Splits self.df into a dict of evenly split data for use in data
+        exploration tasks, such as univariate plots.
         '''
         splt_kwargs = dict(train_size=.5, random_state=777)
         return train_test_split(self.df, **splt_kwargs)
@@ -70,10 +71,13 @@ class AutopilotExploratoryAnalysis:
         return self.profile_report.get_rejected_variables(threshold=threshold)
 
     def characterize_distributions(self):
-        '''Determine what each numeric column's distribution is
-        and return recommended scaling techniques.
+        '''Determine what each numeric column's distribution is and return
+        recommended a DataFrame of the best distributions.
         '''
-        pass
+        dist_dict = dict()
+        for num_col in self.num_cols:
+            dist_dict[num_col] = best_theoretical_distribution(self.df[num_col])
+        return pd.DataFrame(dist_dict)
 
     def scale_numeric_columns(self):
         pass
@@ -85,13 +89,21 @@ class AutopilotExploratoryAnalysis:
         pass
 
     def generate_correlation_heatmap(self, univariate_kwargs):
+        pass
+
+    def generate_univarite_plots(self, features_list):
+        '''Leverages featexp (with modifications made inside of this repo) to
+        plot univariate plots for both a train and test dataset for comparison
+        '''
         if self.target_col is None:
             raise ValueError("No target_col specified.")
-        else:
-            get_univariate_plots(data=self.split_data[])
-
-    def generate_univarite_plots(self):
-        pass
+        if features_list is None:
+            features_list = self.num_cols
+        kwargs = dict(data=self.split_data[0],
+                      target_col=self.target_col,
+                      data_test=self.split_data[1],
+                      features_list=features_list)
+        get_univariate_plots(**kwargs)
 
     def derive_features_from_data(self, feature_derivation_func):
         pass

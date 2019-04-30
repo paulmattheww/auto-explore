@@ -12,6 +12,34 @@ import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
 
+
+def target_distribution_over_binary_groups(df, binary_cols, target_col, plot_type='boxenplot', **plot_kwargs):
+    '''For use during feature engineering.  Pass a DataFrame
+    with a list of `binary_cols` that represent the names of columns
+    that are binary categories.  The `target_col` str is the variable
+    you are trying to model.  Requires seaborn >= 0.9.0.
+    '''
+    for col in binary_cols:
+        if plot_type=='boxenplot':
+            sns.boxenplot(y=df[target_col], x=df[col], **plot_kwargs)
+        elif plot_type=='violinplot':
+            sns.violinplot(y=df[target_col], x=df[col], **plot_kwargs)
+        else:
+            sns.boxplot(y=df[target_col], x=df[col], **plot_kwargs)
+        ax = plt.gca()
+        mu0, mu1 = df[target_col].groupby(df[col]).mean()
+        sd0, sd1 = df[target_col].groupby(df[col]).std()
+        ncol = df.loc[df[col]==1].shape[0]
+        ax.axhline(mu0, label=f'mean = {round(mu0, 2)}|{col} = 0', color='blue', linestyle=':')
+        ax.axhline(mu1, label=f'mean = {round(mu1, 2)}|{col} = 1 with {ncol} observations',
+                   color='orange', linestyle='-.')
+        ax.grid(alpha=.4)
+        ax.set_title(col)
+        sns.despine()
+        ax.legend(loc='best')
+        plt.show()
+
+
 def get_grouped_data(input_data, feature, target_col, bins, cuts=0):
     """
     Bins continuous features into equal sample size buckets and returns the
