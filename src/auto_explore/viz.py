@@ -22,6 +22,32 @@ sns.set_style("whitegrid")
 cluster_kwargs = dict(random_state=777)
 text_kwargs = dict(ngram_range=(1,3), min_df=3, max_features=1000)
 
+print('''
+TODO:
+ordered_days = [...]
+g = sns.FacetGrid(
+    tips, row="day", row_order=ordered_days
+)
+g.map(sns.distplot, "total_bill", hist=False, rug=True)
+
+-----
+
+g = sns.PairGrid(df, diag_sharey=False)
+g.map_lower(sns.kdeplot)
+g.map_upper(sns.scatterplot)
+g.map_diag(sns.kdeplot, lw=3)
+
+-----
+
+look into sns.catplot for category on X, probability on Y, and another
+category that breaks barplot into colors.
+
+
+-----
+
+look into PLOTNINE for ggplot2 type stuff.  
+''')
+
 
 def target_distribution_over_binary_groups(df, binary_cols, target_col,
                                           plot_type='boxenplot',
