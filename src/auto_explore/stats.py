@@ -6,14 +6,14 @@ import pandas as pd
 DIST_NAMES = ['gamma', 'beta', 'rayleigh', 'norm', 'pareto', 'uniform', 'logistic']
 
 def best_theoretical_distribution(data, bins=100, dist_names=DIST_NAMES):
-    '''Uses log-likelihood to determine which distribution is a best fit
+    '''Uses max-likelihood to determine which distribution is a best fit
     for a given 1D array by characterizing the sum of squared errors of each
     model on the actual data.
 
     ARGS:
-        data <np.array>: 1D Vector with no missing values to characterize
+        data <np.array>: 1D array with no missing values to characterize
     KWARGS:
-        bins <int>: Number of bins to use in np.histogram.
+        bins <int>: Number of bins to use in np.histogram
     RETURNS:
         param_dict {pd.Series}: results of dist.fit(data) and the sum of squared
             errors for each of the distributions in dist_names
@@ -39,8 +39,3 @@ def best_theoretical_distribution(data, bins=100, dist_names=DIST_NAMES):
         param_dict[dist_name] = sse
 
     return  pd.Series(param_dict)
-
-
-class Analyzers:
-    def __init__(self):
-        pass
