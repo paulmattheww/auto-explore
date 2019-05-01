@@ -22,8 +22,10 @@ sns.set_style("whitegrid")
 cluster_kwargs = dict(random_state=777)
 text_kwargs = dict(ngram_range=(1,3), min_df=3, max_features=1000)
 
-print('''
+print(
+'''
 TODO:
+
 ordered_days = [...]
 g = sns.FacetGrid(
     tips, row="day", row_order=ordered_days
@@ -42,10 +44,9 @@ g.map_diag(sns.kdeplot, lw=3)
 look into sns.catplot for category on X, probability on Y, and another
 category that breaks barplot into colors.
 
-
 -----
 
-look into PLOTNINE for ggplot2 type stuff.  
+look into PLOTNINE for ggplot2 type stuff.
 ''')
 
 
