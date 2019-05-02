@@ -202,6 +202,24 @@ class AutopilotExploratoryAnalysis:
         '''
         pass
 
+    def numeric_pairgrid_plot(self):
+        '''Plots seaborn's version of a PairGrid using a 2-D KDE plot
+        on the lower half, a 1-D KDE plot on the diagonal, and a scatterplot
+        on the upper half.
+
+        You may want to sample your data if you have a lot of data, especially
+        if you have many dimensions.  Works best on smaller datasets.  
+
+        ARGS:
+        KWARGS:
+        RETURNS:
+        '''
+        num_cols = self.num_cols + self.bin_cols
+        g = sns.PairGrid(self.df[num_cols], diag_sharey=False)
+        g.map_lower(sns.kdeplot)
+        g.map_upper(sns.scatterplot)
+        g.map_diag(sns.kdeplot, lw=3)
+
     def full_suite_report(self):
         '''
 

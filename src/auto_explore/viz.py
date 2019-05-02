@@ -1,28 +1,3 @@
-# Import statements
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from numba import double
-from numba.decorators import jit
-import pandas as pd
-from sklearn.decomposition import PCA
-from sklearn.cluster import KMeans
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from scikitplot.metrics import plot_silhouette
-from yellowbrick.text import TSNEVisualizer
-import matplotlib as mpl
-import matplotlib.dates as mdates
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-
-# Settings preferred
-mpl.rcParams['figure.figsize'] = (13, 9)
-sns.set_style("whitegrid")
-
-# Declaration of constants
-cluster_kwargs = dict(random_state=777)
-text_kwargs = dict(ngram_range=(1,3), min_df=3, max_features=1000)
-
-print(
 '''
 TODO:
 
@@ -47,7 +22,32 @@ category that breaks barplot into colors.
 -----
 
 look into PLOTNINE for ggplot2 type stuff.
-''')
+'''
+
+# Import statements
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from numba import double
+from numba.decorators import jit
+import pandas as pd
+from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+from scikitplot.metrics import plot_silhouette
+from yellowbrick.text import TSNEVisualizer
+import matplotlib as mpl
+import matplotlib.dates as mdates
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+
+# Settings preferred
+mpl.rcParams['figure.figsize'] = (13, 9)
+sns.set_style("whitegrid")
+
+# Declaration of constants
+cluster_kwargs = dict(random_state=777)
+text_kwargs = dict(ngram_range=(1,3), min_df=3, max_features=1000)
+
 
 
 def target_distribution_over_binary_groups(df, binary_cols, target_col,
