@@ -39,6 +39,8 @@ from yellowbrick.text import TSNEVisualizer
 import matplotlib as mpl
 import matplotlib.dates as mdates
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from sklearn.ensemble import RandomForestClassifier
+
 
 # Settings preferred
 mpl.rcParams['figure.figsize'] = (13, 9)
@@ -47,6 +49,89 @@ sns.set_style("whitegrid")
 # Declaration of constants
 cluster_kwargs = dict(random_state=777)
 text_kwargs = dict(ngram_range=(1,3), min_df=3, max_features=1000)
+
+def lm_group_plot(df, x, y, grp, size=5, aspect=1.5, title=""):
+    '''Plots y over x and performs a linear regression for each unique
+    value of the grp column.
+
+    ARGS:
+        df <pd.DataFrame>: Data
+        x <str>: X-axis column name
+        y <str>: y-axis column name
+        grp <str>: Factor over which to fit
+    KWARGS:
+        size <int>: see mpl
+        aspect <float>: see mpl
+        title <str>: Title of the plot
+    RETURNS:
+        None, plots to the console.
+    '''
+    sns.lmplot(x=x, y=y, data=df, hue=grp, size=size, aspect=aspect)
+    ax = plt.gca()
+    sns.despine()
+    ax.grid(alpha=.4)
+    ax.set_title(title, size=24)
+    plt.show()
+
+def scatterplot_matrix_kde(df):
+    '''Plots seaborn's version of a PairGrid using a 2-D KDE plot
+    on the lower half, a 1-D KDE plot on the diagonal, and a scatterplot
+    on the upper half.
+
+    You may want to sample your data if you have a lot of data, especially
+    if you have many dimensions.  Works best on smaller datasets.
+
+    ARGS:
+    KWARGS:
+    RETURNS:
+    '''
+    g = sns.PairGrid(df, diag_sharey=False)
+    g.map_lower(sns.kdeplot)
+    g.map_upper(sns.scatterplot)
+    g.map_diag(sns.kdeplot, lw=3))
+
+
+def rf_feature_importances(X, y, RandomForestModel=RandomForestClassifier,
+                           forest_kwargs=dict(random_state=777), pretrained=False,
+                           title='', outpath=None, use_top_n=None, figsize=(13, 8)):
+    '''Derives feature importances from an sklearn.ensemble.RandomForestClassifier
+    or sklearn.ensemble.RandomForestRegressor model and plots them in descending
+    order the feature importances of that model.
+
+    ARGS:
+        X <pd.DataFrame>:
+        y <array>:
+    KWARGS:
+        RandomForestModel <sklearn.ensemble.RandomForest*>: hasattr(feature_importances_)
+        forest_kwargs <dict>: Keyword args for RandomForestModel training
+        pretrained <bool>: If True model will not be trained
+        title <str>: Title of plot output
+        outpath <path-like>: Output file name of image if want to save
+        use_top_n <int>: Number of feaures to use in plotting
+        figsize <tuple>: Size of the figure
+    '''
+    if not pretrained:
+        forest = RandomForestModel(**forest_kwargs)
+        forest.fit(X, y)
+    else:
+        forest = RandomForestModel
+    forest.features_list_ = X.columns.tolist()
+
+    feats = {}
+    for feature, importance in zip(forest.features_list_, forest.feature_importances_):
+        feats[feature] = importance
+
+    fig, ax = plt.subplots(figsize=figsize)
+    feats = pd.Series(feats).sort_values()
+    if use_top_n:
+        feats = feats[-use_top_n:]
+    feats.plot(kind="barh", ax=ax)
+    ax = plt.gca()
+    sns.despine()
+    ax.set_title(title)
+    if outpath:
+        plt.savefig(outpath)
+    plt.show()
 
 
 
@@ -112,7 +197,7 @@ def categorical_frequency_distribution(df, cat_cols, top_n=None):
 
 
 def plot_tseries_over_group_with_histograms(df, xcol, ycol, grpcol,
-                                            title_prepend='{}',
+                                            vertical_predicate_col=None, vertical_value_col=None, title_prepend='{}',
                                             labs=None, x_angle=0, labelpad=60,
                                             window=15, ignore_cols=[]):
     '''
@@ -158,7 +243,7 @@ def plot_tseries_over_group_with_histograms(df, xcol, ycol, grpcol,
         if grp not in ignore_cols:
             _df = df.loc[df[grpcol] == grp]
             ax = axes[j]
-            ax.plot(_df[xcol], _df[ycol], alpha=.2, color='black')
+            ax.plot(_df[xcol], _df[ycol], alpha=.6, linestyle=':', color='blue')
             ax.plot(_df[xcol], _df[ycol].rolling(window=window, min_periods=min(5, window)).mean(),
                     alpha=.5, color='r', label='{} period rolling avg'.format(window),
                     linestyle='--')
@@ -166,36 +251,50 @@ def plot_tseries_over_group_with_histograms(df, xcol, ycol, grpcol,
             ax.plot(_df[xcol], _df[ycol].rolling(window=longer_window, min_periods=5).mean(),
                     alpha=.8, color='darkred', label='{} period rolling avg'.format(longer_window),
                     linewidth=2)
+
+            # get mean and std form subset
             mu, sigma = _df[ycol].mean(), _df[ycol].std()
-            ax.axhline(mu, linestyle='--', color='r', alpha=.3)
-            ax.axhline(mu - sigma, linestyle='-.', color='y', alpha=.3)
-            ax.axhline(mu + sigma, linestyle='-.', color='y', alpha=.3)
+            ax.axhline(mu, linestyle='--', color='r', alpha=.2, label=f"mean = {round(mu, 2)}")
+            ax.axhline(mu - sigma, linestyle='-.', color='y', alpha=.2, label=f"mean - std = {round(mu - sigma, 2)}")
+            ax.axhline(mu + sigma, linestyle='-.', color='y', alpha=.2, label=f"mean + std = {round(mu + sigma, 2)}")
             ax.set_title(title_prepend.format(grp))
             ax.legend(loc='best')
-            bottom, top = mu - 3*sigma, mu + 3*sigma
+            bottom, top = mu - 4*sigma, mu + 4*sigma
+            bottom = max(0, bottom)
             ax.set_ylim((bottom, top))
-            if labs is not None:
+
+            # set labels on X and Y axes
+            if labs:
                 ax.set_xlabel(labs['xlab'])
                 ax.set_ylabel(labs['ylab'])
+
+            # configure axes labelpads and months
             ax.xaxis.labelpad = labelpad
             ax.xaxis.set_minor_locator(months)
-            ax.grid(alpha=.1)
+            ax.grid(alpha=.3)
+
+            # angle dates if gnarly
             if x_angle != 0:
                 for tick in ax.get_xticklabels():
                     tick.set_rotation(x_angle)
 
+            # acquire vertical lines on the X axis
+            if vertical_predicate_col:
+                for ix, row in df.iterrows():
+                    if row[vertical_predicate_col] == True:
+                        ax.axvline(row[vertical_value_col], alpha=.2, color='gray')
+
+            # switch axes to the right side for histogram
             divider = make_axes_locatable(ax)
             axHisty = divider.append_axes('right', 1.2, pad=0.1, sharey=ax)
             axHisty.grid(alpha=.1)
             axHisty.hist(_df[ycol].dropna(), orientation='horizontal', alpha=.5, color='lightgreen', bins=25)
             axHisty.axhline(mu, linestyle='--', color='r', label='mu', alpha=.3)
-            axHisty.axhline(mu - sigma, linestyle='-.', color='y', label='+/- two sigma', alpha=.3)
+            axHisty.axhline(mu - sigma, linestyle='-.', color='y', label='+/- 1 sigma', alpha=.3)
             axHisty.axhline(mu + sigma, linestyle='-.', color='y', alpha=.3)
             axHisty.legend(loc='best')
 
             j += 1
-        else:
-            pass
 
     sns.set_style("whitegrid")
     sns.despine()
