@@ -4,20 +4,28 @@ Class definitions for automated EDA.
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 from .featexp import get_trend_stats, get_univariate_plots
 from .stats import best_theoretical_distribution
 from .diligence import get_df_columns_dtypes
 from .diligence import get_numeric_columns
 from .diligence import get_str_or_object_columns
+from .viz import rf_feature_importances
+from .viz import scatterplot_matrix_kde
+from .viz import target_distribution_over_binary_groups
+from .viz import categorical_frequency_distribution
+from .viz import plot_tseries_over_group_with_histograms
+from .viz import text_cluster_tsne
 
 class AutopilotExploratoryAnalysis:
     def __init__(self, df, bin_cols, cat_cols, num_cols,
-                kwargs=dict(text_cols=None, target_col=None, time_dim=None, dask=False)):
+                kwargs=dict(text_cols=None,target_col=None,time_dim=None,dask=False)):
         '''It is best to pass in the df in a format that is ready for analysis.
         Ideally, missing values have already been filled in or dropped in order
-        to extract a reasonable first-pass analysis.
+        to extract a reasonable first-pass analysis, though this object type
+        can help you with the process of identifying where attention should be
+        applied when preprocessing your data.
 
         ARGS:
             bin_cols <list>: Binary columns.  Vectors must adhere to
@@ -201,6 +209,22 @@ class AutopilotExploratoryAnalysis:
         RETURNS:
         '''
         pass
+
+    def pairplot_matrix(self, numeric_cols=None):
+        '''Plots seaborn's version of a PairGrid using a 2-D KDE plot
+        on the lower half, a 1-D KDE plot on the diagonal, and a scatterplot
+        on the upper half.
+
+        You may want to sample your data if you have a lot of data, especially
+        if you have many dimensions.  Works best on smaller datasets.
+
+        ARGS:
+        KWARGS:
+        RETURNS:
+        '''
+        if not numeric_cols:
+            numeric_cols = self.num_cols + self.bin_cols
+        scatterplot_matrix_kde(self.df[numeric_cols]):
 
     def full_suite_report(self):
         '''
