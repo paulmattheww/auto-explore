@@ -47,6 +47,33 @@ stack_df = pd.DataFrame(df[['SP500', 'NASDAQCOM']].stack()).reset_index(drop=Fal
 stack_df.columns = ['date', 'ix', 'close']
 plot_tseries_over_group_with_histograms(stack_df, 'date', 'close', 'ix')
 
+
+# text cluster
+from sklearn.datasets import fetch_20newsgroups
+txt = fetch_20newsgroups(subset='train').data
+text_cluster_tsne(txt[:1000], n_clusters=6)
+
+# rf_feature_importance
+rf_feature_importances(wine_df.drop(columns='target'), wine_df.target)
+
+
+# target_distribution_over_binary_groups
+pct_chg_df = df[['SP500', 'DJIA']].pct_change()
+pct_chg_df['is_holiday_week'] = pct_chg_df.index.values
+hol_map = dict(zip(cal_df.index.values, cal_df.is_holiday_week))
+pct_chg_df['is_holiday_week'] = pct_chg_df['is_holiday_week'].map(hol_map)
+target_distribution_over_binary_groups(pct_chg_df, ['is_holiday_week'], 'SP500')
+
+
+#
+from sklearn.datasets import load_iris
+data = load_iris()
+iris_df = pd.DataFrame(data['data'], columns=data['feature_names'])
+iris_df['target'] = data['target']
+
+
+
+
 # from auto_explore.eda import AutopilotExploratoryAnalysis
 # args = (df, bin_cols, cat_cols, num_cols, text_cols)
 # kwargs = dict(target_col=target_col)

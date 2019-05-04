@@ -11,12 +11,7 @@ from .stats import best_theoretical_distribution
 from .diligence import get_df_columns_dtypes
 from .diligence import get_numeric_columns
 from .diligence import get_str_or_object_columns
-from .viz import rf_feature_importances
-from .viz import scatterplot_matrix_kde
-from .viz import target_distribution_over_binary_groups
-from .viz import categorical_frequency_distribution
-from .viz import plot_tseries_over_group_with_histograms
-from .viz import text_cluster_tsne
+from .viz import *
 
 class AutopilotExploratoryAnalysis:
     def __init__(self, df, bin_cols, cat_cols, num_cols,
@@ -36,6 +31,7 @@ class AutopilotExploratoryAnalysis:
         KWARGS:
             target_col=None, hue=None, na_tolerance=.10, time_dim=None, dask=True
         '''
+        # set attributes
         self.df = df
         self.bin_cols = bin_cols
         self.cat_cols = cat_cols
@@ -45,14 +41,16 @@ class AutopilotExploratoryAnalysis:
         self.time_dim = time_dim
         self.dask = dask
 
+        # Set derivative attributes
+        self._X = df[bin_cols + cat_cols + num_cols]
+        self._y = df[target_col]
+        self.X = None
+        self.y = None
+
     @property
     def split_data(self):
         '''Splits self.df into a dict of evenly split data for use in data
         exploration tasks, such as univariate plots.
-
-        ARGS:
-        KWARGS:
-        RETURNS:
         '''
         splt_kwargs = dict(train_size=.5, random_state=777)
         return train_test_split(self.df, **splt_kwargs)
@@ -61,10 +59,6 @@ class AutopilotExploratoryAnalysis:
     def characterize_missing_values(self):
         '''Returns a pd.Series with the column name as the key and the percent
         of the column that is missing as the value.
-
-        ARGS:
-        KWARGS:
-        RETURNS:
         '''
         return self.df.isna().sum() / self.df.shape[0]
 
@@ -122,7 +116,7 @@ class AutopilotExploratoryAnalysis:
         scaler = Scaler().fit(self.df[self.num_cols])
         return (scaler.transform(self.df[self.num_cols]), scaler)
 
-    def viz_target_over_groups(self):
+    def target_distribution_over_binary_groups(self):
         '''
 
         ARGS:
@@ -236,11 +230,15 @@ class AutopilotExploratoryAnalysis:
         '''
         pass
 
-    def rf_feature_importance(self):
+    def rf_feature_importances(self):
         '''
 
         ARGS:
         KWARGS:
         RETURNS:
         '''
-        pass
+        rf_feature_importances(self.X, wine_df.target)
+
+
+
+# END

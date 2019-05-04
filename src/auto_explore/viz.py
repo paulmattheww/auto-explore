@@ -382,6 +382,9 @@ def cluster_and_plot_pca(df,
 
     plt.show()
 
+    # return the clustering algorithm for predictions
+    return clust
+
 @jit
 def correlation_heatmap(df, cutoff=None, title='', outpath=None, type='pearson'):
     '''Performs a correlation heatmap on a pd.DataFrame object.  Uses numba's
