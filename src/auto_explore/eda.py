@@ -20,7 +20,7 @@ from .viz import text_cluster_tsne
 
 class AutopilotExploratoryAnalysis:
     def __init__(self, df, bin_cols, cat_cols, num_cols,
-                kwargs=dict(text_cols=None,target_col=None,time_dim=None,dask=False)):
+                text_cols=None, target_col=None, time_dim=None, dask=False):
         '''It is best to pass in the df in a format that is ready for analysis.
         Ideally, missing values have already been filled in or dropped in order
         to extract a reasonable first-pass analysis, though this object type
@@ -41,8 +41,9 @@ class AutopilotExploratoryAnalysis:
         self.cat_cols = cat_cols
         self.num_cols = num_cols
         self.text_cols = text_cols
-        for k, v in kwargs.items():
-            setattr(self, f'{k}', v)
+        self.target_col = target_col
+        self.time_dim = time_dim
+        self.dask = dask
 
     @property
     def split_data(self):
@@ -224,7 +225,7 @@ class AutopilotExploratoryAnalysis:
         '''
         if not numeric_cols:
             numeric_cols = self.num_cols + self.bin_cols
-        scatterplot_matrix_kde(self.df[numeric_cols]):
+        scatterplot_matrix_kde(self.df[numeric_cols])
 
     def full_suite_report(self):
         '''

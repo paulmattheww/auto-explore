@@ -68,7 +68,7 @@ def scatterplot_matrix_kde(df):
     g = sns.PairGrid(df, diag_sharey=False)
     g.map_lower(sns.kdeplot)
     g.map_upper(sns.scatterplot)
-    g.map_diag(sns.kdeplot, lw=3))
+    g.map_diag(sns.kdeplot, lw=3)
 
 
 def rf_feature_importances(X, y, RandomForestModel=RandomForestClassifier,
