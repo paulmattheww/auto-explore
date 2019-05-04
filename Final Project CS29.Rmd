@@ -1,7 +1,9 @@
 ---
 title: "Automating Exploratory Data Analysis"
 author: "Paul M Washburn"
-date: "5/4/2019"
+date: "May 2019"
+school: "Harvard Extension School"
+course: "CSCI E29 Advanced Python for Data Science"
 output: revealjs::revealjs_presentation
 ---
 
@@ -9,16 +11,16 @@ output: revealjs::revealjs_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## R Markdown
+## Towards Automated Exploration
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+The primary goal of `auto-explore` was to build a codebase for exploratory data analysis.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+## Benefits Semi-automation of Data Analysis
 
-## Slide with Bullets
+- Faster time to insights & modeling
+- Shorter exploratory data analysis turnaround
+- Consistent, reliable processes that are vetted over time
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+
 
 

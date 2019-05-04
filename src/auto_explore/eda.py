@@ -42,10 +42,10 @@ class AutopilotExploratoryAnalysis:
         self.dask = dask
 
         # Set derivative attributes
-        self._X = df[bin_cols + cat_cols + num_cols]
-        self._y = df[target_col]
-        self.X = None
-        self.y = None
+        self._X = df[bin_cols + cat_cols + num_cols] # raw X
+        self._y = df[target_col]                     # raw y
+        self.X = None                                # processed X
+        self.y = None                                # processed y
 
     @property
     def split_data(self):
@@ -55,14 +55,20 @@ class AutopilotExploratoryAnalysis:
         splt_kwargs = dict(train_size=.5, random_state=777)
         return train_test_split(self.df, **splt_kwargs)
 
-
     def characterize_missing_values(self):
         '''Returns a pd.Series with the column name as the key and the percent
         of the column that is missing as the value.
         '''
         return self.df.isna().sum() / self.df.shape[0]
 
-    def fill_missing_values(self, groupby_cols=None, interpolation_func=None):
+    @property
+    def has_missing_values(self):
+        '''Quick check for missing values for input df.'''
+        if self.characterize_missing_values().sum() > 0:
+            return True
+        return False
+
+    def fill_missing_values(self, interpolation_func='median'):
         '''Several methods to impute missing data.  Depends on characterization
         of missing values.
 
@@ -73,7 +79,17 @@ class AutopilotExploratoryAnalysis:
                 pd.DataFrame.groupby object and use heuristics to interpolate
         RETURNS:
         '''
-        pass
+        num_cols, cat_cols, bin_cols = self.num_cols, self.cat_cols, self.bin_cols
+        _df = self.df.copy()
+        if self.characterize_missing_values().sum() > 0:
+            if interpolation_func == 'median':
+                _df[num_cols] = _df[num_cols].fillna(_df[num_cols].median())
+            else:
+                _df[num_cols] = _df[num_cols].fillna(_df[num_cols].mean())
+            _df[cat_cols] = _df[cat_cols].fillna('MISSING')
+            _df[bin_cols] = _df[bin_cols].fillna(0)
+            setattr(self, 'df', _df)
+            print("Set attribute `df` with non-missing data version of original")
 
     @property
     def profile_report(self):
@@ -116,14 +132,19 @@ class AutopilotExploratoryAnalysis:
         scaler = Scaler().fit(self.df[self.num_cols])
         return (scaler.transform(self.df[self.num_cols]), scaler)
 
-    def target_distribution_over_binary_groups(self):
+    def target_distribution_over_binary_groups(self, override_bin_cols=None, **kwargs):
         '''
 
         ARGS:
         KWARGS:
         RETURNS:
         '''
-        pass
+        if not override_bin_cols:
+            args = (self.df, self.bin_cols, self.target_col)
+            target_distribution_over_binary_groups(*args, **kwargs)
+        else:
+            args = (self.df, override_bin_cols, self.target_col)
+            target_distribution_over_binary_groups(*args, **kwargs)
 
     def convert_categoricals(self):
         '''
@@ -134,14 +155,17 @@ class AutopilotExploratoryAnalysis:
         '''
         pass
 
-    def generate_correlation_heatmap(self, univariate_kwargs):
+    def generate_correlation_heatmap(self, X=None):
         '''
 
         ARGS:
         KWARGS:
         RETURNS:
         '''
-        pass
+        if not X:
+            correlation_heatmap(self.df[self.num_cols + self.bin_cols])
+        else:
+            correlation_heatmap(X)
 
     def generate_univarite_plots(self, features_list=None):
         '''Leverages featexp (with modifications made inside of this repo) to
@@ -160,14 +184,16 @@ class AutopilotExploratoryAnalysis:
                       features_list=features_list)
         return get_univariate_plots(**kwargs)
 
-    def derive_features_from_data(self, feature_derivation_func):
+    def derive_features_from_data(self, feature_derivation_func, **feature_kwargs):
         '''
 
         ARGS:
         KWARGS:
         RETURNS:
         '''
-        pass
+        X = feature_derivation_func(self._X, **feature_kwargs)
+        setattr(self, 'X', X)
+        print(f'Attribute X set on {self}')
 
     def derive_top_text_features(self):
         '''
@@ -230,14 +256,17 @@ class AutopilotExploratoryAnalysis:
         '''
         pass
 
-    def rf_feature_importances(self):
+    def rf_feature_importances(self, X=None):
         '''
 
         ARGS:
         KWARGS:
         RETURNS:
         '''
-        rf_feature_importances(self.X, wine_df.target)
+        if X:
+            rf_feature_importances(X, wine_df.target)
+        else:
+            rf_feature_importances(self.X, wine_df.target)
 
 
 

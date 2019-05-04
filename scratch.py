@@ -5,11 +5,7 @@ import numpy as np
 import pandas as pd
 from sklearn.datasets import load_wine
 
-from auto_explore.viz import text_cluster_tsne
-from auto_explore.viz import cluster_and_plot_pca
-from auto_explore.viz import correlation_heatmap
-from auto_explore.viz import categorical_frequency_distribution
-from auto_explore.viz import plot_tseries_over_group_with_histograms
+from auto_explore.viz import *
 from auto_explore.apis import fetch_fred_data
 from auto_explore.datetime import make_calendars
 
@@ -74,7 +70,33 @@ iris_df['target'] = data['target']
 
 
 
-# from auto_explore.eda import AutopilotExploratoryAnalysis
-# args = (df, bin_cols, cat_cols, num_cols, text_cols)
-# kwargs = dict(target_col=target_col)
-# ax = AutopilotExploratoryAnalysis(*args, **kwargs)
+from auto_explore.eda import AutopilotExploratoryAnalysis
+args = (df, bin_cols, cat_cols, num_cols, text_cols)
+kwargs = dict(target_col=target_col)
+ax = AutopilotExploratoryAnalysis(*args, **kwargs)
+
+
+# test_split_data
+len(ax.split_data) == 2
+
+# test_fill_missing_values
+ax.characterize_missing_values()
+
+#TODO
+# test_fill_missing_values
+
+# test_characterize_distributions
+ax.characterize_distributions().idxmin(axis=0)
+
+# test_scale_numeric_columns
+ax.scale_numeric_columns()
+
+
+
+
+
+
+
+
+
+#END
