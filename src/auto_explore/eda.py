@@ -122,21 +122,30 @@ class AutopilotExploratoryAnalysis:
             dist_dict[num_col] = best_theoretical_distribution(self.df[num_col])
         return pd.DataFrame(dist_dict)
 
-    def scale_numeric_columns(self, Scaler=StandardScaler, scaler_kwargs={}):
+    def scale_numeric_columns(self, Scaler=StandardScaler,
+                             scaler_kwargs=dict(random_state=777)):
         '''User passes a Scaler function to transform their dataset into a
         machine learning friendly format.
 
         KWARGS:
+            Scaler <sklearn.preprocessing>: Transformer for scaling data
+            scaler_kwargs <dict>: kwargs to Transformer passed
         RETURNS:
+            scaled data for num_cols only
         '''
         scaler = Scaler().fit(self.df[self.num_cols])
         return (scaler.transform(self.df[self.num_cols]), scaler)
 
     def target_distribution_over_binary_groups(self, override_bin_cols=None, **kwargs):
-        '''
+        '''Characterizes the distribution of a numeric target vector on the
+        y-axis as either a box, violin, or boxen plot.  Takes a list of
+        categorical columns and displays one plot per unique value in that
+        list, putting the unique values of the category on the x-axis.
 
-        ARGS:
         KWARGS:
+            override_bin_cols <list>: Specific list of binary columns to
+                override the original specified
+            kwargs <dict>: kwargs to target_distribution_over_binary_groups()
         RETURNS:
         '''
         if not override_bin_cols:
@@ -153,7 +162,10 @@ class AutopilotExploratoryAnalysis:
         KWARGS:
         RETURNS:
         '''
-        pass
+        kwargs = dict(columns=self.cat_cols, drop_first=False)
+        _df = pd.get_dummies(self.df, **kwargs)
+        setattr(self, 'df', _df)
+        print("Setting attribute `df` to new frame with numerical categories.")
 
     def generate_correlation_heatmap(self, X=None):
         '''
