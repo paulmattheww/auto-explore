@@ -1,26 +1,6 @@
 '''
 TODO:
-
-ordered_days = [...]
-g = sns.FacetGrid(
-    tips, row="day", row_order=ordered_days
-)
-g.map(sns.distplot, "total_bill", hist=False, rug=True)
-
------
-
-g = sns.PairGrid(df, diag_sharey=False)
-g.map_lower(sns.kdeplot)
-g.map_upper(sns.scatterplot)
-g.map_diag(sns.kdeplot, lw=3)
-
------
-
-look into sns.catplot for category on X, probability on Y, and another
-category that breaks barplot into colors.
-
------
-
+make color palettes more thought out
 look into PLOTNINE for ggplot2 type stuff.
 '''
 
@@ -88,7 +68,7 @@ def scatterplot_matrix_kde(df):
     g = sns.PairGrid(df, diag_sharey=False)
     g.map_lower(sns.kdeplot)
     g.map_upper(sns.scatterplot)
-    g.map_diag(sns.kdeplot, lw=3))
+    g.map_diag(sns.kdeplot, lw=3)
 
 
 def rf_feature_importances(X, y, RandomForestModel=RandomForestClassifier,
@@ -401,6 +381,9 @@ def cluster_and_plot_pca(df,
         ax.set_title(f"Silhouette Plot Clusters={n_clusters}", size=12)
 
     plt.show()
+
+    # return the clustering algorithm for predictions
+    return clust
 
 @jit
 def correlation_heatmap(df, cutoff=None, title='', outpath=None, type='pearson'):
