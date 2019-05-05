@@ -20,8 +20,8 @@ def get_wine_data():
 
 wine_df = get_wine_data()
 
-cluster_and_plot_pca(wine_df)
-correlation_heatmap(wine_df)
+#cluster_and_plot_pca(wine_df)
+#correlation_heatmap(wine_df)
 
 # datatype sensors
 series_list = ['SP500', 'NASDAQCOM', 'DJIA', 'RU2000PR'] # cboe energy sector etf volatility
@@ -41,16 +41,16 @@ target_col = ['SP500']
 
 stack_df = pd.DataFrame(df[['SP500', 'NASDAQCOM']].stack()).reset_index(drop=False)
 stack_df.columns = ['date', 'ix', 'close']
-plot_tseries_over_group_with_histograms(stack_df, 'date', 'close', 'ix')
+#plot_tseries_over_group_with_histograms(stack_df, 'date', 'close', 'ix')
 
 
 # text cluster
 from sklearn.datasets import fetch_20newsgroups
 txt = fetch_20newsgroups(subset='train').data
-text_cluster_tsne(txt[:1000], n_clusters=6)
+#text_cluster_tsne(txt[:1000], n_clusters=6)
 
 # rf_feature_importance
-rf_feature_importances(wine_df.drop(columns='target'), wine_df.target)
+#rf_feature_importances(wine_df.drop(columns='target'), wine_df.target)
 
 
 # target_distribution_over_binary_groups
@@ -58,7 +58,7 @@ pct_chg_df = df[['SP500', 'DJIA']].pct_change()
 pct_chg_df['is_holiday_week'] = pct_chg_df.index.values
 hol_map = dict(zip(cal_df.index.values, cal_df.is_holiday_week))
 pct_chg_df['is_holiday_week'] = pct_chg_df['is_holiday_week'].map(hol_map)
-target_distribution_over_binary_groups(pct_chg_df, ['is_holiday_week'], 'SP500')
+#target_distribution_over_binary_groups(pct_chg_df, ['is_holiday_week'], 'SP500')
 
 
 #
@@ -71,6 +71,7 @@ iris_df['target'] = data['target']
 
 
 from auto_explore.eda import AutopilotExploratoryAnalysis
+
 args = (df, bin_cols, cat_cols, num_cols, text_cols)
 kwargs = dict(target_col=target_col)
 ax = AutopilotExploratoryAnalysis(*args, **kwargs)
@@ -86,11 +87,20 @@ ax.characterize_missing_values()
 # test_fill_missing_values
 
 # test_characterize_distributions
-ax.characterize_distributions().idxmin(axis=0)
+#ax.characterize_distributions().idxmin(axis=0)
 
 # test_scale_numeric_columns
 ax.scale_numeric_columns()
 
+# test_has_missing_values
+ax.has_missing_values
+
+# force missing and fill in
+#ax.df.loc[ax.df.date == '2011-01-03', 'DJIA'] = np.nan
+ax.fill_missing_values()
+
+#ax.profile_report
+#ax.generate_univarite_plots()
 
 
 

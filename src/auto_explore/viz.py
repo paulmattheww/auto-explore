@@ -13,6 +13,7 @@ from numba.decorators import jit
 import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from scikitplot.metrics import plot_silhouette
 from yellowbrick.text import TSNEVisualizer
@@ -30,7 +31,47 @@ sns.set_style("whitegrid")
 cluster_kwargs = dict(random_state=777)
 text_kwargs = dict(ngram_range=(1,3), min_df=3, max_features=1000)
 
-def lm_group_plot(df, x, y, grp, size=5, aspect=1.5, title=""):
+def derive_optimal_clusters(df, cluster_range=np.arange(2, 11),
+                            num_cols=None, Scaler=StandardScaler,
+                            ClusterAlgorithm=KMeans, show=False):
+    '''Without changing kwargs this function scales the data with a
+    StandardScaler for numeric columns, then performs KMeans clustering
+    over a range of clusters.
+
+    ARGS:
+        df <pd.DataFrame>: Data in question to cluster.  Ensure there are
+            not any missing values, and all categoricals are converted to
+            numeric data types
+    KWARGS:
+        kwargs <dict>: dict(cluster_range=np.arange(2, 11),
+                                    num_cols=None, Scaler=StandardScaler,
+                                    ClusterAlgorithm=KMeans)
+    RETURNS:
+        None, plots to console
+    '''
+    # scale the data
+    scl = Scaler()
+    scl.fit(df[num_cols])
+    df[num_cols] = scl.transform(df[num_cols])
+
+    # iterate over
+    sse = list()
+    for k in cluster_range:
+        clust = ClusterAlgorithm(n_clusters=k)
+        clust.fit(df)
+        sse.append(clust.inertia_)
+
+    # plot
+    fig, ax = plt.subplots()
+    ax.plot(cluster_range, sse, 'bx-', linestyle=':')
+    ax.set_xlabel('Number of Clusters')
+    ax.set_ylabel('Sum of Squared Distances')
+    ax.set_title('Elbow Method for Optimal K Clusters', size=18)
+    sns.despine()
+    ax.grid(alpha=.4)
+    plt.show()
+
+def lm_group_plot(df, x, y, grp, size=5, aspect=1.5, title="", show=True):
     '''Plots y over x and performs a linear regression for each unique
     value of the grp column.
 
@@ -51,7 +92,8 @@ def lm_group_plot(df, x, y, grp, size=5, aspect=1.5, title=""):
     sns.despine()
     ax.grid(alpha=.4)
     ax.set_title(title, size=24)
-    plt.show()
+    if show:
+        plt.show()
 
 def scatterplot_matrix_kde(df):
     '''Plots seaborn's version of a PairGrid using a 2-D KDE plot
