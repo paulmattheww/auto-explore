@@ -100,7 +100,7 @@ ax.has_missing_values
 ax.fill_missing_values()
 
 #ax.profile_report
-ax.generate_univarite_plots()
+#ax.generate_univarite_plots()
 
 
 

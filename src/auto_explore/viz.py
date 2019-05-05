@@ -71,7 +71,7 @@ def derive_optimal_clusters(df, cluster_range=np.arange(2, 11),
     ax.grid(alpha=.4)
     plt.show()
 
-def lm_group_plot(df, x, y, grp, size=5, aspect=1.5, title="", show=False):
+def lm_group_plot(df, x, y, grp, size=5, aspect=1.5, title="", show=True):
     '''Plots y over x and performs a linear regression for each unique
     value of the grp column.
 
@@ -92,7 +92,8 @@ def lm_group_plot(df, x, y, grp, size=5, aspect=1.5, title="", show=False):
     sns.despine()
     ax.grid(alpha=.4)
     ax.set_title(title, size=24)
-    plt.show()
+    if show:
+        plt.show()
 
 def scatterplot_matrix_kde(df):
     '''Plots seaborn's version of a PairGrid using a 2-D KDE plot

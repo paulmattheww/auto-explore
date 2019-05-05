@@ -36,7 +36,7 @@ Critical thinking is not included.
 
 - Faster time to **insights & modeling**
 - Shorter exploratory data analysis turnaround
-- Consistent, reliable processes that are vetted & improved over time
+- Reliable processes that are **vetted & improved** over time
 - No need to re-configure old code to new situations
 - Supplies a base for more in-depth analysis
 
@@ -71,16 +71,21 @@ Critical thinking is not included.
 
 ![cluster_and_plot_pca2](/Users/pmw/Desktop/templates/auto-explore/img/silhouette.png)
 
+## Clustering Analysis
 
-# <b>Functionality</b> <small></small> {data-background=#B5F55E}
+![elbow](/Users/pmw/Desktop/templates/auto-explore/img/elbow.png)
 
 
 
-## The Central Object
+# <b>Functionality</b> <small>Using the `AutopilotExploratoryAnalysis` object will make many methods available on your data with minimal set up.<br><br>However each module in this library can be used separately without ever instantiating this object.<br><br>Streamlining functionality into this object is still in alpha stages and is by no means perfect.  True automation is a ways away.</small> {data-background=#B5F55E}
 
-Simply specify a `DataFrame` and a list for each of its binary, categorical, numerical and text columns.  If applicable, set the `target_col` as a string.  
 
-```{python example1, eval=FALSE, echo=TRUE}
+
+## Interface to Semi-Automation
+
+Simply specify a `DataFrame` and a list for each of its binary, categorical, numerical and text columns.  If applicable, set the `target_col` as a list with one element (string).  
+
+```python
 from auto_explore.eda import AutopilotExploratoryAnalysis
 
 args = (df, bin_cols, cat_cols, num_cols, text_cols)

@@ -180,6 +180,23 @@ class AutopilotExploratoryAnalysis:
                       features_list=features_list)
         get_univariate_plots(**kwargs)
 
+    def get_univariate_trend_stats(self, **kwargs):
+        '''Calculates trend changes and correlation between train/test for
+        each feature in features_list (if supplied in kwargs).
+
+        KWARGS:
+            kwargs <dict>: See get_trend_stats in featexp.py
+        RETURNS:
+            stats <pd.DataFrame>: Reverse sorted by trend correlation
+        '''
+        if self.target_col is None:
+            raise ValueError("No target_col specified.")
+        stats = get_trend_stats(data=self.split_data[0],
+                                target_col=self.target_col[0],
+                                data_test=self.split_data[1],
+                                **kwargs)
+        return stats
+
     def derive_features_from_data(self, feature_derivation_func, **feature_kwargs):
         '''User-specified feature_derivation_func to transform the dataset
         into a machine learning format.
@@ -277,7 +294,7 @@ class AutopilotExploratoryAnalysis:
                 use_top_n <int>: Number of feaures to use in plotting
                 figsize <tuple>: Size of the figure
         '''
-        y = self.df[self.target_col]
+        y = self.df[self.target_col[0]]
         if features_list:
             X = self.df[features_list]
             rf_feature_importances(X, y, **kwargs)
