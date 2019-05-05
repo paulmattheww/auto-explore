@@ -34,7 +34,20 @@ text_kwargs = dict(ngram_range=(1,3), min_df=3, max_features=1000)
 def derive_optimal_clusters(df, cluster_range=np.arange(2, 11),
                             num_cols=None, Scaler=StandardScaler,
                             ClusterAlgorithm=KMeans):
-    '''
+    '''Without changing kwargs this function scales the data with a
+    StandardScaler for numeric columns, then performs KMeans clustering
+    over a range of clusters.
+
+    ARGS:
+        df <pd.DataFrame>: Data in question to cluster.  Ensure there are
+            not any missing values, and all categoricals are converted to
+            numeric data types
+    KWARGS:
+        kwargs <dict>: dict(cluster_range=np.arange(2, 11),
+                                    num_cols=None, Scaler=StandardScaler,
+                                    ClusterAlgorithm=KMeans)
+    RETURNS:
+        None, plots to console
     '''
     # scale the data
     scl = Scaler()
