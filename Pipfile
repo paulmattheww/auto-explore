@@ -11,6 +11,7 @@ pandas = "*"
 ipython = "*"
 
 [packages]
+pytest = "*"
 auto-explore = {editable = true,path = "."}
 sklearn = "*"
 pandas-profiling = "*"
