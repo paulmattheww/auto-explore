@@ -102,6 +102,10 @@ ax.fill_missing_values()
 #ax.profile_report
 #ax.generate_univarite_plots()
 
+scatterplot_matrix_kde(iris_df)
+
+lm_group_plot(wine_df, 'color_intensity', 'flavanoids', 'target')
+
 
 
 
