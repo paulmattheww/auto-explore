@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from pandas_profiling import ProfileReport
 
 from .featexp import get_trend_stats, get_univariate_plots
 from .stats import best_theoretical_distribution
@@ -73,10 +74,7 @@ class AutopilotExploratoryAnalysis:
         of missing values.
 
         KWARGS:
-            groupby_cols <list> or None: Use if it is desired to perform some
-                sort of interpolation based on group identity.
-            interpolation_func <object>: Function object that will accept a
-                pd.DataFrame.groupby object and use heuristics to interpolate
+            interpolation_func <str>: One of 'mean', 'median', 'bfill', 'ffill'
         RETURNS:
         '''
         num_cols, cat_cols, bin_cols = self.num_cols, self.cat_cols, self.bin_cols
@@ -84,6 +82,10 @@ class AutopilotExploratoryAnalysis:
         if self.characterize_missing_values().sum() > 0:
             if interpolation_func == 'median':
                 _df[num_cols] = _df[num_cols].fillna(_df[num_cols].median())
+            elif interpolation_func == 'ffill':
+                _df[num_cols] = _df[num_cols].fillna(method='ffill')
+            elif interpolation_func == 'bfill':
+                _df[num_cols] = _df[num_cols].fillna(method='bfill')
             else:
                 _df[num_cols] = _df[num_cols].fillna(_df[num_cols].mean())
             _df[cat_cols] = _df[cat_cols].fillna('MISSING')
