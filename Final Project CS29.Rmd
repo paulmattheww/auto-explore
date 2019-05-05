@@ -21,7 +21,7 @@ autosize: true
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-# <b>`auto_explore`</b> <small>Machine learning practitioners need first to identify signal in their datasets before building models.<br><br>Iteration cycle time *matters* in the development of machine learning solutions.  This work is a first attempt at accelerating this cycle time for a range of dataset types.</small> {data-background=#AAE6E6}
+# <b>`auto_explore`</b> <small>Machine learning practitioners need first to identify signal in their datasets before building models.<br><br>Iteration cycle time *matters* in the development of machine learning solutions.  This work is a first attempt at accelerating this cycle time for a range of dataset types.<br><br>It is assumed the user is inside a Jupyter Notebook REPL environment.</small> {data-background=#AAE6E6}
 
 
 ## Towards Automated Exploration
@@ -136,20 +136,17 @@ ax = AutopilotExploratoryAnalysis(*args, **kwargs)
 
 This object makes available 17 methods for use on the `df` supplied as an arg.  Check out the most recent code on [Github](https://github.com/paulmattheww/auto-explore/blob/master/src/auto_explore/eda.py).
 
-## Other Modules
+## Other Modules 
 
-## `viz.py`
-
-## `featexp.py`
-
-## `apis.py`
-
-## `notebooks.py`
-
-## `stats.py`
-
-## `datetime.py`
+- <small>`viz.py` - Contains all the visualization functions useful in EDA</small>
+- <small>`featexp.py` - Copy as of April 2019 of the [`featexp`](https://github.com/abhayspawar/featexp) main package code</small>
+- <small>`apis.py` - Code that fetches data and machine learning models from various sources</small>
+- <small>`notebooks.py` - Formatting code for inside a Jupyter Notebook REPL environment</small>
+- <small>`stats.py` - Currently only houses `best_theoretical_distribution` but this will expand</small>
+- <small>`datetime.py` - Houses code pertaining to time-series features (e.g. `make_calendars`)</small>
+- <small>`diligence.py` - Houses code that performs sanity checks of various sorts</small>
 
 
-# <b>Future Work</b> <small></small> {data-background=#F8AAD5}
+
+# <b>Future Work</b> <small>The goal for this library is to automate as much of the EDA process as possible for as wide a range of dataset types as possible.<br><br>The library is not quite there yet.<br><br>Until then efforts will be made to abstract and integrate into this library as many EDA tasks as possible, and eventually have a `full_suite_report` mechanism.</small> {data-background=#CAF4BB}
 
