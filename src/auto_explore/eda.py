@@ -43,8 +43,6 @@ class AutopilotExploratoryAnalysis:
         self.dask = dask
 
         # Set derivative attributes
-        self._X = df[bin_cols + cat_cols + num_cols] # raw X
-        self._y = df[target_col]                     # raw y
         self.X = None                                # processed X
         self.y = None                                # processed y
 
@@ -169,17 +167,18 @@ class AutopilotExploratoryAnalysis:
         setattr(self, 'df', _df)
         print("Setting attribute `df` to new frame with numerical categories.")
 
-    def generate_correlation_heatmap(self, X=None):
-        '''
+    def generate_correlation_heatmap(self, heatmap_cols=None):
+        '''Generates a correlation heatmap.
 
         ARGS:
-        KWARGS:
+            heatmap_cols <list>: Numeric columns to perform correlations
         RETURNS:
+            None, plots to console
         '''
-        if not X:
+        if not heatmap_cols:
             correlation_heatmap(self.df[self.num_cols + self.bin_cols])
         else:
-            correlation_heatmap(X)
+            correlation_heatmap(self.df[heatmap_cols])
 
     def generate_univarite_plots(self, features_list=None):
         '''Leverages featexp (with modifications made inside of this repo) to
@@ -191,59 +190,58 @@ class AutopilotExploratoryAnalysis:
         if self.target_col is None:
             raise ValueError("No target_col specified.")
         if features_list is None:
-            features_list = self.num_cols
+            features_list = self.num_cols + self.bin_cols
         kwargs = dict(data=self.split_data[0],
-                      target_col=self.target_col,
+                      target_col=self.target_col[0],
                       data_test=self.split_data[1],
                       features_list=features_list)
         return get_univariate_plots(**kwargs)
 
     def derive_features_from_data(self, feature_derivation_func, **feature_kwargs):
-        '''
+        '''User-specified feature_derivation_func to transform the dataset
+        into a machine learning format.
 
         ARGS:
+            feature_derivation_func <object>: User-defined
         KWARGS:
+            feature_kwargs <dict>: kwargs for feature_derivation_func
         RETURNS:
+            Sets X on self
         '''
         X = feature_derivation_func(self._X, **feature_kwargs)
         setattr(self, 'X', X)
         print(f'Attribute X set on {self}')
 
-    def derive_top_text_features(self):
-        '''
+    def cluster_and_plot(self, cluster_cols=None, **cluster_kwargs):
+        '''Performs KMeans (or another specified clustering method that
+        accepts n_clusters as an arg) on either the binary and numeric columns
+        in the original dataset, or the cluster_cols specified as a list.
 
         ARGS:
+            cluster_cols <list>: Columns to cluster on self.df
         KWARGS:
+            cluster_kwargs <dict>: num_cols, Scaler, ClusterAlgorithm
         RETURNS:
+            None, plots to the console
         '''
-        pass
+        if cluster_cols:
+            cluster_and_plot_pca(self.df[cluster_cols], **cluster_kwargs)
+        else:
+            cluster_and_plot_pca(self.df[self.num_cols + self.bin_cols])
 
-    def extract_text_features(self, vectorizer_func=CountVectorizer, **vectorizer_kwargs):
-        '''
+    def derive_optimal_clusters(self, **kwargs):
+        '''Without changing kwargs this function scales the data with a
+        StandardScaler for numeric columns, then performs KMeans clustering
+        over a range of clusters.
 
-        ARGS:
         KWARGS:
+            kwargs <dict>: dict(cluster_range=np.arange(2, 11),
+                                        num_cols=None, Scaler=StandardScaler,
+                                        ClusterAlgorithm=KMeans)
         RETURNS:
+            None, plots to console
         '''
-        pass
-
-    def cluster_and_plot(self, cluster_cols=None, cluster_func=None):
-        '''
-
-        ARGS:
-        KWARGS:
-        RETURNS:
-        '''
-        pass
-
-    def derive_optimal_clusters(self):
-        '''
-
-        ARGS:
-        KWARGS:
-        RETURNS:
-        '''
-        pass
+        return derive_optimal_clusters(self.df, num_cols=self.num_cols, **kwargs)
 
     def pairplot_matrix(self, numeric_cols=None):
         '''Plots seaborn's version of a PairGrid using a 2-D KDE plot
@@ -260,15 +258,6 @@ class AutopilotExploratoryAnalysis:
         if not numeric_cols:
             numeric_cols = self.num_cols + self.bin_cols
         scatterplot_matrix_kde(self.df[numeric_cols])
-
-    def full_suite_report(self):
-        '''
-
-        ARGS:
-        KWARGS:
-        RETURNS:
-        '''
-        pass
 
     def rf_feature_importances(self, X=None):
         '''
