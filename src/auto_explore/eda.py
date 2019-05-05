@@ -1,5 +1,9 @@
 '''
 Class definitions for automated EDA.
+
+TODO:
+- Lasso & Ridge feature selection
+- SelectKBest feature selection 
 '''
 import pandas as pd
 from sklearn.model_selection import train_test_split
