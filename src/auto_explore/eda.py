@@ -3,13 +3,14 @@ Class definitions for automated EDA.
 
 TODO:
 - Lasso & Ridge feature selection
-- SelectKBest feature selection 
+- VarianceThreshold drop of features
+- SelectKBest feature selection
 '''
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from pandas_profiling import ProfileReport
+# from pandas_profiling import ProfileReport
 
 from .featexp import get_trend_stats, get_univariate_plots
 from .stats import best_theoretical_distribution
