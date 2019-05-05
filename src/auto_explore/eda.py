@@ -74,6 +74,7 @@ class AutopilotExploratoryAnalysis:
         KWARGS:
             interpolation_func <str>: One of 'mean', 'median', 'bfill', 'ffill'
         RETURNS:
+            None, sets df attr
         '''
         num_cols, cat_cols, bin_cols = self.num_cols, self.cat_cols, self.bin_cols
         _df = self.df.copy()
@@ -91,31 +92,13 @@ class AutopilotExploratoryAnalysis:
             setattr(self, 'df', _df)
             print("Set attribute `df` with non-missing data version of original")
 
-    @property
-    def profile_report(self):
-        '''Runs pandas_profiler.ProfileReport on self.df to return an HTML
-        rendering of the data's summary.  Also a property.
-
-        RETURNS:
-            pandas_profiler.ProfileReport of self.df
-        '''
-        return ProfileReport(self.df)
-
-    def identify_reject_columns(self, threshold=.90):
-        '''Leverages pandas_profiler.ProfileReport object of self to use the
-        method get_rejected_variables.  Returns all variables that are stable
-        insofar as they are not highly correlated with other variables.
-
-        KWARGS:
-        RETURNS:
-        '''
-        return self.profile_report.get_rejected_variables(threshold=threshold)
-
     def characterize_distributions(self):
         '''Determine what each numeric column's distribution is and return
         recommended a DataFrame of the best distributions.
 
         RETURNS:
+            <pd.DataFrame>: which theoretical distribution fits best the data
+                by taking by looking at the output statistics
         '''
         dist_dict = dict()
         for num_col in self.num_cols:
@@ -156,11 +139,8 @@ class AutopilotExploratoryAnalysis:
             target_distribution_over_binary_groups(*args, **kwargs)
 
     def convert_categoricals(self):
-        '''
-
-        ARGS:
-        KWARGS:
-        RETURNS:
+        '''Converts all cat_cols in self.df to one-hot variables, preserving
+        one column for each value.  Drops Nulls.
         '''
         kwargs = dict(columns=self.cat_cols, drop_first=False)
         _df = pd.get_dummies(self.df, **kwargs)
@@ -185,7 +165,10 @@ class AutopilotExploratoryAnalysis:
         plot univariate plots for both a train and test dataset for comparison
 
         KWARGS:
+            features_list <list>: Which numeric features to use in univariate
+                plotting
         RETURNS:
+            None, outputs to console univariate plots and statistics
         '''
         if self.target_col is None:
             raise ValueError("No target_col specified.")
@@ -195,7 +178,7 @@ class AutopilotExploratoryAnalysis:
                       target_col=self.target_col[0],
                       data_test=self.split_data[1],
                       features_list=features_list)
-        return get_univariate_plots(**kwargs)
+        get_univariate_plots(**kwargs)
 
     def derive_features_from_data(self, feature_derivation_func, **feature_kwargs):
         '''User-specified feature_derivation_func to transform the dataset
@@ -241,7 +224,7 @@ class AutopilotExploratoryAnalysis:
         RETURNS:
             None, plots to console
         '''
-        return derive_optimal_clusters(self.df, num_cols=self.num_cols, **kwargs)
+        derive_optimal_clusters(self.df, num_cols=self.num_cols, **kwargs)
 
     def pairplot_matrix(self, numeric_cols=None):
         '''Plots seaborn's version of a PairGrid using a 2-D KDE plot
@@ -259,17 +242,69 @@ class AutopilotExploratoryAnalysis:
             numeric_cols = self.num_cols + self.bin_cols
         scatterplot_matrix_kde(self.df[numeric_cols])
 
-    def rf_feature_importances(self, X=None):
-        '''
+    def lm_group_plot(self, x, y, grp, **kwargs):
+        '''Plots y over x and performs a linear regression for each unique
+        value of the grp column.
 
         ARGS:
+            df <pd.DataFrame>: Data
+            x <str>: X-axis column name
+            y <str>: y-axis column name
+            grp <str>: Factor over which to fit
         KWARGS:
+            size <int>: see mpl
+            aspect <float>: see mpl
+            title <str>: Title of the plot
         RETURNS:
+            None, plots to the console.
         '''
-        if X:
-            rf_feature_importances(X, wine_df.target)
+        lm_group_plot(self.df, x, y, grp, **kwargs)
+
+    def rf_feature_importances(self, features_list=None, **kwargs):
+        '''Derives feature importances from an sklearn.ensemble.RandomForestClassifier
+        or sklearn.ensemble.RandomForestRegressor model and plots them in descending
+        order the feature importances of that model.
+
+        KWARGS:
+            features_list <list>: List of features in self.df to use for modeling
+            kwargs <dict>:
+                RandomForestModel <sklearn.ensemble.RandomForest*>:
+                    hasattr(feature_importances_)
+                forest_kwargs <dict>: Keyword args for RandomForestModel training
+                pretrained <bool>: If True model will not be trained
+                title <str>: Title of plot output
+                outpath <path-like>: Output file name of image if want to save
+                use_top_n <int>: Number of feaures to use in plotting
+                figsize <tuple>: Size of the figure
+        '''
+        y = self.df[self.target_col]
+        if features_list:
+            X = self.df[features_list]
+            rf_feature_importances(X, y, **kwargs)
         else:
-            rf_feature_importances(self.X, wine_df.target)
+            X = self.df[self.bin_cols + self.num_cols]
+            rf_feature_importances(X, y, **kwargs)
+
+    # TODO:
+    # @property
+    # def profile_report(self):
+    #     '''Runs pandas_profiler.ProfileReport on self.df to return an HTML
+    #     rendering of the data's summary.  Also a property.
+    #
+    #     RETURNS:
+    #         pandas_profiler.ProfileReport of self.df
+    #     '''
+    #     return ProfileReport(self.df)
+    #
+    # def identify_reject_columns(self, threshold=.90):
+    #     '''Leverages pandas_profiler.ProfileReport object of self to use the
+    #     method get_rejected_variables.  Returns all variables that are stable
+    #     insofar as they are not highly correlated with other variables.
+    #
+    #     KWARGS:
+    #     RETURNS:
+    #     '''
+    #     return self.profile_report.get_rejected_variables(threshold=threshold)
 
 
 

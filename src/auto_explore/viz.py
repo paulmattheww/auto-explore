@@ -33,7 +33,7 @@ text_kwargs = dict(ngram_range=(1,3), min_df=3, max_features=1000)
 
 def derive_optimal_clusters(df, cluster_range=np.arange(2, 11),
                             num_cols=None, Scaler=StandardScaler,
-                            ClusterAlgorithm=KMeans):
+                            ClusterAlgorithm=KMeans, show=False):
     '''Without changing kwargs this function scales the data with a
     StandardScaler for numeric columns, then performs KMeans clustering
     over a range of clusters.
@@ -71,7 +71,7 @@ def derive_optimal_clusters(df, cluster_range=np.arange(2, 11),
     ax.grid(alpha=.4)
     plt.show()
 
-def lm_group_plot(df, x, y, grp, size=5, aspect=1.5, title=""):
+def lm_group_plot(df, x, y, grp, size=5, aspect=1.5, title="", show=False):
     '''Plots y over x and performs a linear regression for each unique
     value of the grp column.
 
