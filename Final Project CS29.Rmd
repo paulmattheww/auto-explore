@@ -1,32 +1,91 @@
 ---
-title: "Automating Exploratory Data Analysis"
+title: "<b>Automating Exploratory Data Analysis</b>"
 author: "Paul M Washburn"
-date: "May 2019"
-output: revealjs::revealjs_presentation
+date: "<small>May 6 2019</small>"
+output: revealjs::revealjs_presentation#html_document #ioslides_presentation #slidy_presentation #beamer_presentation #revealjs::revealjs_presentation
+theme: solarized
+center: true
+fig_width: 10
+fig_height: 5
+fig_caption: true
+widescreen: true
+# navigation: slide
+transition: rotate
+background_transition: concave
+# width: 1500
+# height: 1200
+autosize: true
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+# <b>`auto_eda`</b> <small></small> {data-background=#AAE6E6}
+
+
 ## Towards Automated Exploration
 
-The primary goal of [`auto-explore`](https://github.com/paulmattheww/auto-explore) is to to establish and expand upon a codebase that greatly reduces the effort to produce a first-pass exploratory data analysis.
+The primary goal of [`auto-explore`](https://github.com/paulmattheww/auto-explore) is to to establish a codebase that reduces the effort to produce a reasonable first-pass exploratory data analysis for a variety of dataset types.
 
-## Benefits Semi-automation of Data Analysis
+This Python library is a first attempt at automating the process of exploratory data analysis -- at least as far as computation and visualization is concerned.  
 
-- Faster time to insights & modeling
+Critical thinking is not included.
+
+## Potential Benefits Semi-automated EDA
+
+- Faster time to **insights & modeling**
 - Shorter exploratory data analysis turnaround
-- Consistent, reliable processes that are vetted over time
+- Consistent, reliable processes that are vetted & improved over time
 - No need to re-configure old code to new situations
+- Supplies a base for more in-depth analysis
+
+## Previous Work in the Space
+
+
+# <b>Overview</b> <small>Simply specify a dataset and a few attributes.<br><br>Much of the functionality of this library is to generate visualizations that are useful in understanding data.  However there is a great deal of analytical functionality included as well, including some lightweight machine learning.</small> {data-background=#DA863C}
+
+## Text Analysis
+
+![tsne](/Users/pmw/Desktop/templates/auto-explore/img/tsne cluster.png)
+
 
 ## Time Series
 
-![tseries](/Users/pmw/Desktop/templates/auto-explore/img/tseries.png)
+![plot_tseries_over_group_with_histograms](/Users/pmw/Desktop/templates/auto-explore/img/tseries.png)
 
 ## Correlation Heatmaps
 
-![tseries](/Users/pmw/Desktop/templates/auto-explore/img/heatmap.png)
+![correlation_heatmap](/Users/pmw/Desktop/templates/auto-explore/img/heatmap.png)
 
+## Categorical Analysis
+
+![target_distribution_over_binary_groups](/Users/pmw/Desktop/templates/auto-explore/img/boxen.png)
+
+
+## Clustering Analysis
+
+![cluster_and_plot_pca1](/Users/pmw/Desktop/templates/auto-explore/img/kmeans.png)
+
+## Clustering Analysis
+
+![cluster_and_plot_pca2](/Users/pmw/Desktop/templates/auto-explore/img/silhouette.png)
+
+
+# <b>Functionality</b> <small></small> {data-background=#B5F55E}
+
+
+
+## The Central Object
+
+Simply specify a `DataFrame` and a list for each of its binary, categorical, numerical and text columns.  If applicable, set the `target_col` as a string.  
+
+```{python example1, eval=FALSE, echo=TRUE}
+from auto_explore.eda import AutopilotExploratoryAnalysis
+
+args = (df, bin_cols, cat_cols, num_cols, text_cols)
+kwargs = dict(target_col=target_col)
+ax = AutopilotExploratoryAnalysis(*args, **kwargs)
+```
 
 
