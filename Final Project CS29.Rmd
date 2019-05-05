@@ -122,7 +122,7 @@ DATE
 
 
 
-## `eda.py`: Interface to Semi-Automation
+## `auto_explore.eda`: Interface to Semi-Automation
 
 Simply specify a `DataFrame` and a list for each of its binary, categorical, numerical and text columns.  If applicable, set the `target_col` as a list with one element (string).  
 
@@ -138,13 +138,13 @@ This object makes available 17 methods for use on the `df` supplied as an arg.  
 
 ## Other Modules 
 
-- <small>`viz.py` - Contains all the visualization functions useful in EDA</small>
-- <small>`featexp.py` - Copy as of April 2019 of the [`featexp`](https://github.com/abhayspawar/featexp) main package code</small>
-- <small>`apis.py` - Code that fetches data and machine learning models from various sources</small>
-- <small>`notebooks.py` - Formatting code for inside a Jupyter Notebook REPL environment</small>
-- <small>`stats.py` - Currently only houses `best_theoretical_distribution` but this will expand</small>
-- <small>`datetime.py` - Houses code pertaining to time-series features (e.g. `make_calendars`)</small>
-- <small>`diligence.py` - Houses code that performs sanity checks of various sorts</small>
+- <small>`auto_explore.viz` - Contains all the visualization functions useful in EDA</small>
+- <small>`auto_explore.featexp` - Copy as of April 2019 of the [`featexp`](https://github.com/abhayspawar/featexp) main package code with custom changes</small>
+- <small>`auto_explore.apis` - Code that fetches data and machine learning models from various sources</small>
+- <small>`auto_explore.notebooks` - Formatting code for inside a Jupyter Notebook REPL environment</small>
+- <small>`auto_explore.stats` - Currently only houses `best_theoretical_distribution` but this will expand</small>
+- <small>`auto_explore.datetime` - Houses code pertaining to time-series features (e.g. `make_calendars`)</small>
+- <small>`auto_explore.diligence` - Houses code that performs sanity checks of various sorts</small>
 
 
 
