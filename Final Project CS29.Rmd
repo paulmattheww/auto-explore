@@ -2,8 +2,6 @@
 title: "Automating Exploratory Data Analysis"
 author: "Paul M Washburn"
 date: "May 2019"
-school: "Harvard Extension School"
-course: "CSCI E29 Advanced Python for Data Science"
 output: revealjs::revealjs_presentation
 ---
 
@@ -13,14 +11,22 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Towards Automated Exploration
 
-The primary goal of `auto-explore` was to build a codebase for exploratory data analysis.
+The primary goal of [`auto-explore`](https://github.com/paulmattheww/auto-explore) is to to establish and expand upon a codebase that greatly reduces the effort to produce a first-pass exploratory data analysis.
 
 ## Benefits Semi-automation of Data Analysis
 
 - Faster time to insights & modeling
 - Shorter exploratory data analysis turnaround
 - Consistent, reliable processes that are vetted over time
+- No need to re-configure old code to new situations
 
+## Time Series
+
+![tseries](/Users/pmw/Desktop/templates/auto-explore/img/tseries.png)
+
+## Correlation Heatmaps
+
+![tseries](/Users/pmw/Desktop/templates/auto-explore/img/heatmap.png)
 
 
 

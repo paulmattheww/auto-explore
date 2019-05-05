@@ -91,6 +91,9 @@ ax.characterize_distributions().idxmin(axis=0)
 # test_scale_numeric_columns
 ax.scale_numeric_columns()
 
+# test_has_missing_values
+ax.has_missing_values()
+
 
 
 
