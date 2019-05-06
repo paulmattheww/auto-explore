@@ -59,7 +59,7 @@ This work necessarily relied upon many excellent open source Python libraries.  
 
 ## Text Analysis
 
-![tsne](/Users/pmw/Desktop/templates/auto-explore/img/tsne cluster.png)
+![tsne](/Users/pmw/Desktop/templates/auto-explore/img/tsne cluster.png){width=850px}
 
 ## Time Series Analysis
 
@@ -67,29 +67,29 @@ This work necessarily relied upon many excellent open source Python libraries.  
 
 ## Correlation Analysis
 
-![correlation_heatmap](/Users/pmw/Desktop/templates/auto-explore/img/heatmap.png)
+![correlation_heatmap](/Users/pmw/Desktop/templates/auto-explore/img/heatmap.png){width=800px}
 
 ## Correlation Analysis
 
-![scatterplotmatrix](/Users/pmw/Desktop/templates/auto-explore/img/scatterplot matrix.png)
+![scatterplotmatrix](/Users/pmw/Desktop/templates/auto-explore/img/scatterplot matrix.png){width=675px}
 
 
 ## Categorical Analysis
 
-![target_distribution_over_binary_groups](/Users/pmw/Desktop/templates/auto-explore/img/boxen.png)
+![target_distribution_over_binary_groups](/Users/pmw/Desktop/templates/auto-explore/img/boxen.png){width=800px}
 
 
 ## Clustering Analysis
 
-![cluster_and_plot_pca1](/Users/pmw/Desktop/templates/auto-explore/img/kmeans.png)
+![cluster_and_plot_pca1](/Users/pmw/Desktop/templates/auto-explore/img/kmeans.png){width=800px}
 
 ## Clustering Analysis
 
-![cluster_and_plot_pca2](/Users/pmw/Desktop/templates/auto-explore/img/silhouette.png)
+![cluster_and_plot_pca2](/Users/pmw/Desktop/templates/auto-explore/img/silhouette.png){width=800px}
 
 ## Clustering Analysis
 
-![elbow](/Users/pmw/Desktop/templates/auto-explore/img/elbow.png)
+![elbow](/Users/pmw/Desktop/templates/auto-explore/img/elbow.png){width=800px}
 
 ## Helper Functions
 
