@@ -164,5 +164,5 @@ The actual functionality of the `AutopilotExploratoryAnalysis` object has been a
 # <b>Future Work</b> <small>The goal for this library is to automate as much of the EDA process as possible for as wide a range of dataset types as possible.<br><br>The library is not quite there yet.<br><br>Until then efforts will be made to abstract and integrate into this code base as many EDA tasks as possible, and eventually have a `full_suite_report` mechanism.</small> {data-background=#CAF4BB}
 
 
-# <b>Questions?</b> <small>"The part that is stable we shall predict. The part that is unstable we shall control" -John von Neumann</small> {data-background=#e6e6e6}
+# <b>Questions?</b> <small>*"The part that is stable we shall predict. The part that is unstable we shall control"*<br><br>John von Neumann</small> {data-background=#40f9b6}
 
