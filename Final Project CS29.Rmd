@@ -21,7 +21,7 @@ autosize: true
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-# <b>`auto_eda`</b> <small></small> {data-background=#AAE6E6}
+# <b>`auto_explore`</b> <small>Machine learning practitioners need first to identify signal in their datasets before building models.<br><br>Iteration cycle time *matters* in the development of machine learning solutions.  This work is a first attempt at accelerating this cycle time for a range of dataset types.<br><br>It is assumed the user is inside a Jupyter Notebook REPL environment.</small> {data-background=#AAE6E6}
 
 
 ## Towards Automated Exploration
@@ -30,9 +30,9 @@ The primary goal of [`auto-explore`](https://github.com/paulmattheww/auto-explor
 
 This Python library is a first attempt at automating the process of exploratory data analysis -- at least as far as computation and visualization is concerned.  
 
-Critical thinking is not included.
+Critical thinking is *not* included.
 
-## Potential Benefits Semi-automated EDA
+## Potential Benefits of Semi-automated EDA
 
 - Faster time to **insights & modeling**
 - Shorter exploratory data analysis turnaround
@@ -43,20 +43,28 @@ Critical thinking is not included.
 ## Previous Work in the Space
 
 
-# <b>Overview</b> <small>Simply specify a dataset and a few attributes.<br><br>Much of the functionality of this library is to generate visualizations that are useful in understanding data.  However there is a great deal of analytical functionality included as well, including some lightweight machine learning.</small> {data-background=#DA863C}
+# <b>Overview</b> <small>Simply specify a dataset and a few attributes.<br><br>Much of the functionality of this library is to generate visualizations that are useful in understanding data.  However there is a great deal of analytical functionality included as well, including some lightweight machine learning.</small> {data-background=#F2D478}
+
+## Linear Regression Analysis
+
+![lmplot](/Users/pmw/Desktop/templates/auto-explore/img/lmplot.png)
 
 ## Text Analysis
 
 ![tsne](/Users/pmw/Desktop/templates/auto-explore/img/tsne cluster.png)
 
-
-## Time Series
+## Time Series Analysis
 
 ![plot_tseries_over_group_with_histograms](/Users/pmw/Desktop/templates/auto-explore/img/tseries.png)
 
-## Correlation Heatmaps
+## Correlation Analysis
 
 ![correlation_heatmap](/Users/pmw/Desktop/templates/auto-explore/img/heatmap.png)
+
+## Correlation Analysis
+
+![scatterplotmatrix](/Users/pmw/Desktop/templates/auto-explore/img/scatterplot matrix.png)
+
 
 ## Categorical Analysis
 
@@ -75,13 +83,46 @@ Critical thinking is not included.
 
 ![elbow](/Users/pmw/Desktop/templates/auto-explore/img/elbow.png)
 
+## Helper Functions
+
+```python
+In [10]: from auto_explore.datetime import make_calendars
+In [11]: year_list = np.arange(2011, 2020)
+In [12]: cal_df = make_calendars(year_list, drop_index=False)
+In [13]: cal_df.head()                                                                                                          
+Out[13]: 
+              month  year    weekday  is_weekday  is_holiday  is_holiday_week
+DATE                                                                         
+2011-01-01  January  2011   Saturday           0           0                0
+2011-01-02  January  2011     Sunday           0           0                0
+2011-01-03  January  2011     Monday           1           0                0
+2011-01-04  January  2011    Tuesday           1           0                0
+2011-01-05  January  2011  Wednesday           1           0                0
+```
+
+## Helper Functions
+
+```python
+In [10]: from auto_explore.apis import fetch_fred_data
+In [11]: series_list = ['SP500', 'NASDAQCOM', 'DJIA', 'RU2000PR'] # cboe energy sector etf volatility
+In [12]: econ_df = fetch_fred_data(series_list)
+In [13]: econ_df.head()
+Out[13]: 
+              SP500  NASDAQCOM      DJIA  RU2000PR
+DATE                                              
+2011-01-03  1271.87    2691.52  11670.75   1984.61
+2011-01-04  1270.20    2681.25  11691.18   1952.99
+2011-01-05  1276.56    2702.20  11722.89   1976.01
+2011-01-06  1273.85    2709.89  11697.31   1966.88
+2011-01-07  1271.50    2703.17  11674.76   1957.96            0
+```
 
 
-# <b>Functionality</b> <small>Using the `AutopilotExploratoryAnalysis` object will make many methods available on your data with minimal set up.<br><br>However each module in this library can be used separately without ever instantiating this object.<br><br>Streamlining functionality into this object is still in alpha stages and is by no means perfect.  True automation is a ways away.</small> {data-background=#B5F55E}
+# <b>Functionality & Use</b> <small>Using the `AutopilotExploratoryAnalysis` object will make many methods available on your data with minimal set up.<br><br>However each module in this library can be used separately without ever instantiating this object.<br><br>Streamlining functionality into this object is still in alpha stages and is by no means perfect.  True automation is a ways away.</small> {data-background=#B5F55E}
 
 
 
-## Interface to Semi-Automation
+## `auto_explore.eda`: Interface to Semi-Automation
 
 Simply specify a `DataFrame` and a list for each of its binary, categorical, numerical and text columns.  If applicable, set the `target_col` as a list with one element (string).  
 
@@ -93,4 +134,19 @@ kwargs = dict(target_col=target_col)
 ax = AutopilotExploratoryAnalysis(*args, **kwargs)
 ```
 
+This object makes available 17 methods for use on the `df` supplied as an arg.  Check out the most recent code on [Github](https://github.com/paulmattheww/auto-explore/blob/master/src/auto_explore/eda.py).
+
+## Other Modules 
+
+- <small>`auto_explore.viz` - Contains all the visualization functions useful in EDA</small>
+- <small>`auto_explore.featexp` - Copy as of April 2019 of the [`featexp`](https://github.com/abhayspawar/featexp) main package code with custom changes</small>
+- <small>`auto_explore.apis` - Code that fetches data and machine learning models from various sources</small>
+- <small>`auto_explore.notebooks` - Formatting code for inside a Jupyter Notebook REPL environment</small>
+- <small>`auto_explore.stats` - Currently only houses `best_theoretical_distribution` but this will expand</small>
+- <small>`auto_explore.datetime` - Houses code pertaining to time-series features (e.g. `make_calendars`)</small>
+- <small>`auto_explore.diligence` - Houses code that performs sanity checks of various sorts</small>
+
+
+
+# <b>Future Work</b> <small>The goal for this library is to automate as much of the EDA process as possible for as wide a range of dataset types as possible.<br><br>The library is not quite there yet.<br><br>Until then efforts will be made to abstract and integrate into this library as many EDA tasks as possible, and eventually have a `full_suite_report` mechanism.</small> {data-background=#CAF4BB}
 

@@ -20,7 +20,7 @@ def get_numeric_columns(df):
     '''Filters dtype dict (where the values are of type str) such that only
     numeric columns are returned as a list.
     '''
-    dtypes = get_df_dtypes(df)
+    dtypes = get_df_columns_dtypes(df)
     num_dtypes = ['float64', 'int64', 'float32', 'int32', 'float', 'int',
                 'long', 'complex', 'decimal']
     only_numbers = lambda x: dtypes[x] in num_dtypes
@@ -30,7 +30,7 @@ def get_str_or_object_columns(df):
     '''Filters dtype dict (where the values are of type str) such that only
     str or object dtype columns are returned as a list.
     '''
-    dtypes = get_df_dtypes(df)
+    dtypes = get_df_columns_dtypes(df)
     obj_str_dtypes = ['object', 'str']
     only_numbers = lambda x: dtypes[x] in obj_str_dtypes
     return list(filter(only_numbers, dtypes))

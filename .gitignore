@@ -1,3 +1,4 @@
+src/auto_explore/cli.py
 .ipynb_checkpoints/
 live-tests.ipynb
 *.py[cod]
