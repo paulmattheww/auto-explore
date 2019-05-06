@@ -6,7 +6,7 @@ output: revealjs::revealjs_presentation#html_document #ioslides_presentation #sl
 theme: solarized
 center: true
 fig_width: 10
-fig_height: 5
+fig_height: 4
 fig_caption: true
 widescreen: true
 # navigation: slide
@@ -148,5 +148,5 @@ This object makes available 17 methods for use on the `df` supplied as an arg.  
 
 
 
-# <b>Future Work</b> <small>The goal for this library is to automate as much of the EDA process as possible for as wide a range of dataset types as possible.<br><br>The library is not quite there yet.<br><br>Until then efforts will be made to abstract and integrate into this library as many EDA tasks as possible, and eventually have a `full_suite_report` mechanism.</small> {data-background=#CAF4BB}
+# <b>Future Work</b> <small>The goal for this library is to automate as much of the EDA process as possible for as wide a range of dataset types as possible.<br><br>The library is not quite there yet.<br><br>Until then efforts will be made to abstract and integrate into this code base as many EDA tasks as possible, and eventually have a `full_suite_report` mechanism.</small> {data-background=#CAF4BB}
 
