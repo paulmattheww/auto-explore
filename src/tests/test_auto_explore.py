@@ -2,6 +2,7 @@
 from unittest import TestCase
 
 import pandas as pd
+import numpy as np
 from sklearn.datasets import load_wine
 from sklearn.datasets import load_iris
 
@@ -9,6 +10,7 @@ from auto_explore.eda import AutopilotExploratoryAnalysis
 from auto_explore.viz import *
 from auto_explore.apis import fetch_fred_data
 from auto_explore.datetime import make_calendars
+from auto_explore.stats import best_theoretical_distribution
 
 
 # Iris data gathering
@@ -66,31 +68,26 @@ class TestAutopilotEDA(TestCase):
         self.assertEqual(econ_ax.characterize_missing_values().sum(), 0.)
 
     def test_fill_missing_values(self):
-        pass
-
-    def test_high_level_profile(self):
-        pass
-
-    def test_identify_reject_columns(self):
-        pass
+        econ_ax.df.loc[econ_ax.df.date == '2011-01-03', 'DJIA'] = np.nan
+        econ_ax.fill_missing_values()
+        self.assertTrue(econ_ax.has_missing_values == False)
 
     def test_characterize_distributions(self):
-        pass
+        self.assertEqual(econ_ax.characterize_distributions().shape, (7, 3))
 
     def test_scale_numeric_columns(self):
-        pass
-
-    def test_convert_categoricals(self):
-        pass
-
-    def test_derive_top_text_features(self):
-        pass
+        self.assertTrue(isinstance(econ_ax.scale_numeric_columns(), tuple))
 
     def test_cluster_and_plot(self):
-        pass
+        cluster_and_plot_pca(wine_df, show=False)
 
-    def test_rf_feature_importance(self):
-        pass
+    def test_rf_feature_importances(self):
+        rf_feature_importances(wine_df.drop(columns='target'), wine_df.target, show=False)
 
     def test_derive_optimal_clusters(self):
-        pass
+        num_cols = ['alcohol', 'malic_acid', 'ash',
+                    'alcalinity_of_ash', 'magnesium',
+                    'total_phenols', 'flavanoids', 'nonflavanoid_phenols',
+                    'proanthocyanins', 'color_intensity', 'hue',
+                    'od280/od315_of_diluted_wines', 'proline']
+        derive_optimal_clusters(wine_df, num_cols=num_cols, show=False)

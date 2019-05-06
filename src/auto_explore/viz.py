@@ -33,10 +33,10 @@ text_kwargs = dict(ngram_range=(1,3), min_df=3, max_features=1000)
 
 def derive_optimal_clusters(df, cluster_range=np.arange(2, 11),
                             num_cols=None, Scaler=StandardScaler,
-                            ClusterAlgorithm=KMeans, show=False):
+                            ClusterAlgorithm=KMeans, show=True):
     '''Without changing kwargs this function scales the data with a
     StandardScaler for numeric columns, then performs KMeans clustering
-    over a range of clusters.
+    over a range of clusters.  Columns must be passed as numeric datatypes.
 
     ARGS:
         df <pd.DataFrame>: Data in question to cluster.  Ensure there are
@@ -50,6 +50,8 @@ def derive_optimal_clusters(df, cluster_range=np.arange(2, 11),
         None, plots to console
     '''
     # scale the data
+    if not num_cols:
+        raise ValueError("Must pass num_cols list for scaling.")
     scl = Scaler()
     scl.fit(df[num_cols])
     df[num_cols] = scl.transform(df[num_cols])
@@ -69,7 +71,8 @@ def derive_optimal_clusters(df, cluster_range=np.arange(2, 11),
     ax.set_title('Elbow Method for Optimal K Clusters', size=18)
     sns.despine()
     ax.grid(alpha=.4)
-    plt.show()
+    if show:
+        plt.show()
 
 def lm_group_plot(df, x, y, grp, size=5, aspect=1.5, title="", show=True):
     '''Plots y over x and performs a linear regression for each unique
@@ -116,7 +119,8 @@ def scatterplot_matrix_kde(df):
 
 def rf_feature_importances(X, y, RandomForestModel=RandomForestClassifier,
                            forest_kwargs=dict(random_state=777), pretrained=False,
-                           title='', outpath=None, use_top_n=None, figsize=(13, 8)):
+                           title='', outpath=None, use_top_n=None, figsize=(13, 8),
+                           show=True):
     '''Derives feature importances from an sklearn.ensemble.RandomForestClassifier
     or sklearn.ensemble.RandomForestRegressor model and plots them in descending
     order the feature importances of that model.
@@ -154,7 +158,8 @@ def rf_feature_importances(X, y, RandomForestModel=RandomForestClassifier,
     ax.set_title(title)
     if outpath:
         plt.savefig(outpath)
-    plt.show()
+    if show:
+        plt.show()
 
 
 
@@ -363,7 +368,8 @@ def text_cluster_tsne(text_vector,
 def cluster_and_plot_pca(df,
                          cluster_range=np.arange(2, 9),
                          ClusterAlgorithm=KMeans,
-                         cluster_kwargs=cluster_kwargs):
+                         cluster_kwargs=cluster_kwargs,
+                         show=True):
     '''An unsupervised learning approach to visualizing the number of clusters
     that are appropriate for a given dataset `df`.  If using another
     ClusterAlgorithm than KMeans it must accept the kwarg n_clusters.
@@ -423,7 +429,8 @@ def cluster_and_plot_pca(df,
         sns.despine()
         ax.set_title(f"Silhouette Plot Clusters={n_clusters}", size=12)
 
-    plt.show()
+    if show:
+        plt.show()
 
     # return the clustering algorithm for predictions
     return clust
