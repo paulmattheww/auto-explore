@@ -1,7 +1,7 @@
 ---
-title: "<b>Automating Exploratory Data Analysis</b>"
+title: "<b>Towards Automating Exploratory Data Analysis</b>"
 author: "Paul M Washburn"
-date: "<small>May 6 2019</small>"
+date: "<small>May 6, 2019</small>"
 output: revealjs::revealjs_presentation#html_document #ioslides_presentation #slidy_presentation #beamer_presentation #revealjs::revealjs_presentation
 theme: solarized
 center: true
@@ -40,10 +40,18 @@ Critical thinking is *not* included.
 - No need to re-configure old code to new situations
 - Supplies a base for more in-depth analysis
 
-## Previous Work in the Space
+## Inspirational & Instrumental Works
 
+This work necessarily relied upon many excellent open source Python libraries.  Some of the inspirations and instrumental tools have been:
 
-# <b>Overview</b> <small>Simply specify a dataset and a few attributes.<br><br>Much of the functionality of this library is to generate visualizations that are useful in understanding data.  However there is a great deal of analytical functionality included as well, including some lightweight machine learning.</small> {data-background=#F2D478}
+- <small>[`pandas-profiling`](https://github.com/pandas-profiling/pandas-profiling):  This work was ultimately not used in this library due to neglect of the project.</small>
+- <small>[`featexp`](https://github.com/abhayspawar/featexp):  A great tool for visualizing univariate analyses of a target; useful pre-ML.  This library was integrated into this one for experimentation on extending the work, and is used in producing univariate plots and feature selections.</small>
+- <small>[`matplotlib`](https://matplotlib.org/):  The bare-bones go-to viz package for Python.  This package was relied upon heavily to produce this library.</small>
+- <small>[`seaborn`](https://seaborn.pydata.org/):  Abstracts away from `matplotlib` by performing statistical analysis alongside plot generation.  This package is also relied upon heavily.</small>
+- <small>[`pandas`](https://pandas.pydata.org/):  The go-to data wrangling tool for Python.  `pandas`' `pd.DataFrame` object as well as many of the `tseries` capabilities are leveraged.</small>
+- <small>[`sklearn`](https://scikit-learn.org/):  An indispensable machine learning library that every data scientist should be proficient in using.  All the functionality desired from this package has not yet been integrated into `auto-explore`, but there are plans to leverage this package more in the future.</small>
+
+# <b>Overview</b> <small>The goal was to simply specify a dataset and a few attributes and get analytic visualizations for free.<br><br>Much of the functionality of this library is to generate visualizations that are useful in understanding data.  However there is a great deal of analytical functionality included as well, including some lightweight machine learning.</small> {data-background=#F2D478}
 
 ## Linear Regression Analysis
 
@@ -122,7 +130,9 @@ DATE
 
 
 
-## `auto_explore.eda`: Interface to Semi-Automation
+## `auto_explore.eda`
+
+This part of the library was designed to be an interface to automatic exploration.
 
 Simply specify a `DataFrame` and a list for each of its binary, categorical, numerical and text columns.  If applicable, set the `target_col` as a list with one element (string).  
 
@@ -138,15 +148,21 @@ This object makes available 17 methods for use on the `df` supplied as an arg.  
 
 ## Other Modules 
 
+The actual functionality of the `AutopilotExploratoryAnalysis` object has been abstracted away and modularized into various files within the `auto_explore` package.  This allows for re-use of the code even if the automated option is not taken.  
+
 - <small>`auto_explore.viz` - Contains all the visualization functions useful in EDA</small>
-- <small>`auto_explore.featexp` - Copy as of April 2019 of the [`featexp`](https://github.com/abhayspawar/featexp) main package code with custom changes</small>
-- <small>`auto_explore.apis` - Code that fetches data and machine learning models from various sources</small>
+- <small>`auto_explore.featexp` - A copy [`featexp`](https://github.com/abhayspawar/featexp) code with custom changes; possible pull request in the future</small>
+- <small>`auto_explore.apis` - Code that fetches data and machine learning models from sources</small>
 - <small>`auto_explore.notebooks` - Formatting code for inside a Jupyter Notebook REPL environment</small>
-- <small>`auto_explore.stats` - Currently only houses `best_theoretical_distribution` but this will expand</small>
-- <small>`auto_explore.datetime` - Houses code pertaining to time-series features (e.g. `make_calendars`)</small>
+- <small>`auto_explore.stats` - Currently only houses `best_theoretical_distribution`</small>
+- <small>`auto_explore.datetime` - Houses code pertaining to time-series feature generation</small>
 - <small>`auto_explore.diligence` - Houses code that performs sanity checks of various sorts</small>
 
 
 
+
 # <b>Future Work</b> <small>The goal for this library is to automate as much of the EDA process as possible for as wide a range of dataset types as possible.<br><br>The library is not quite there yet.<br><br>Until then efforts will be made to abstract and integrate into this code base as many EDA tasks as possible, and eventually have a `full_suite_report` mechanism.</small> {data-background=#CAF4BB}
+
+
+# <b>Questions?</b> <small>"The part that is stable we shall predict. The part that is unstable we shall control" -John von Neumann</small> {data-background=#e6e6e6}
 
