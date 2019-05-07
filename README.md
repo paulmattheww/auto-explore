@@ -1,16 +1,16 @@
 # Auto Explore
 
+[![Build Status](https://travis-ci.com/paulmattheww/auto-explore.svg?branch=master)](https://travis-ci.com/paulmattheww/auto-explore)
+
 The goal of this Python library is to create a reliable tool for performing a first-pass exploratory data analysis.  The hope is that ML developers & data analysts will shorten their iteration cycle time by using this tool.  
 
 The earliest stages of a machine learning project require exploratory analysis to uncover raw features and insights that can be exploited in the modeling process.  Exploratory analysis typically follows a somewhat tree-like (and at times recursive) process where task-patterns emerge across projects.  By specifying certain parameters *a priori* about the data in question, a process that adheres to these task-patterns can be designed using open source tools to automate the majority of the "first pass" data analysis work -- freeing up time for deep-dive analyses, modeling, and deployment.
 
 The open source projects that will be relied upon most for this project include:
 
-- [pandas-profiling](https://github.com/pandas-profiling/pandas-profiling)
-- [featexp](https://github.com/abhayspawar/featexp)
-- [speedml](https://speedml.com/automate-exploratory-data-analysis/)
-- [pandas](https://pandas.pydata.org/)
-- [dask](https://github.com/dask/dask)
+- [`featexp`](https://github.com/abhayspawar/featexp)
+- [`pandas`](https://pandas.pydata.org/)
+- [`matplotlib`](https://matplotlib.org/)
 
 The delivery mechanism will be two-fold: a command line interface and a Python package usable in an interactive runtime environment.  Functionality will range from the bare minimum of feature identification to a more detailed reporting on the data.  A full suite will be available for patient users.  
 
