@@ -8,11 +8,9 @@ The earliest stages of a machine learning project require exploratory analysis t
 
 The open source projects that will be relied upon most for this project include:
 
-- [pandas-profiling](https://github.com/pandas-profiling/pandas-profiling)
-- [featexp](https://github.com/abhayspawar/featexp)
-- [speedml](https://speedml.com/automate-exploratory-data-analysis/)
-- [pandas](https://pandas.pydata.org/)
-- [dask](https://github.com/dask/dask)
+- [`featexp`](https://github.com/abhayspawar/featexp)
+- [`pandas`](https://pandas.pydata.org/)
+- [`matplotlib`](https://matplotlib.org/)
 
 The delivery mechanism will be two-fold: a command line interface and a Python package usable in an interactive runtime environment.  Functionality will range from the bare minimum of feature identification to a more detailed reporting on the data.  A full suite will be available for patient users.  
 
